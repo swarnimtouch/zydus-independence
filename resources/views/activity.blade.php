@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Zydus | Hoist The Flag</title>
 
   <link rel="preload" as="image" href="{{ asset('images/logo.png') }}" />
@@ -46,9 +46,9 @@
               <img data-src="{{ asset('images/host.gif') }}" alt="Waving Flag"
                    class="host-gif is-hidden" id="hostGif" />
 
-              <button type="button" class="flag-click-hint" id="flagClickHint">
-                Click on flag to host it
-              </button>
+              <span class="flag-click-hint" id="flagClickHint">
+                Click on flag to host it ^
+              </span>
             </div>
           </div>
         </div>
@@ -112,6 +112,7 @@
     <a href="{{ route('atorva.gold') }}" class="btn-next is-hidden" id="activityArrowBtn" aria-label="Continue"><span aria-hidden="true">&gt;&gt;</span></a>
   </div>
 
+  <script src="{{ asset('js/viewport-fit.js') }}"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="{{ asset('js/activity.js') }}"></script>

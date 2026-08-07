@@ -68,9 +68,8 @@
      ============================================================ */
   // Pole visible, phase1Text visible.
   // CSS already finger cursor + hint pulse lagata hai.
-  // Click listener lagao:
+  // Actual hosting action sirf flag image par rahe.
   $poleImage.on('click', startPhase2);
-  $flagHint.on('click', startPhase2);
 
   gsap.to('#phase1Text .text-line', {
     opacity: 1,
