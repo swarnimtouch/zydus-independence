@@ -40,8 +40,8 @@
       </div>
     </div>
 
-    <!-- Next button → third.html -->
-    <a href="{{route('third')}}" class="btn-next">Next</a>
+    <!-- Arrow button to third slide -->
+    <a href="{{route('third')}}" class="btn-next" aria-label="Continue"><span aria-hidden="true">&gt;&gt;</span></a>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

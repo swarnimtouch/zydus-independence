@@ -18,7 +18,7 @@
   const $phase1Text  = $('#phase1Text');
   const $phase3Text  = $('#phase3Text');
   const $bubblesCont = $('#bubblesContainer');
-  const $nextBtn     = $('#activityNextBtn');
+  const $nextBtn     = $('#activityArrowBtn');
   const audioEl      = document.getElementById('bgAudio');
   const hostGifSrc   = $hostGif.data('src');
   const poleOnlySrc  = 'images/pole.png';
