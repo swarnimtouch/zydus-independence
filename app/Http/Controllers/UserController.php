@@ -25,18 +25,30 @@ class UserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name'       => ['required', 'string', 'max:255'],
-            'city'       => ['required', 'string', 'max:255'],
-            'speciality' => ['required', 'string', 'max:255'],
+            'name'         => 'required|string|max:255',
+            'bo_code'      => 'required|string|max:255',
+            'doctor_code'  => 'required|string|max:255',
+            'photo'        => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
+        // Upload Photo
+        if ($request->hasFile('photo')) {
 
+            $file = $request->file('photo');
 
-        $user=User::create($validated);
+            $fileName = time().'_'.$file->getClientOriginalName();
+
+            $file->move(public_path('uploads/users'), $fileName);
+
+            $validated['photo'] = 'uploads/users/'.$fileName;
+        }
+
+        $user = User::create($validated);
+
         session(['user_id' => $user->id]);
 
         return redirect()->route('second')
-        ->with('success', 'Form submitted successfully!');
+            ->with('success', 'Form submitted successfully!');
     }
 
     public function second()
