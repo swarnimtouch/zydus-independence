@@ -19,6 +19,7 @@
   const $phase3Text  = $('#phase3Text');
   const $bubblesCont = $('#bubblesContainer');
   const $nextBtn     = $('#activityArrowBtn');
+  const $flagHint    = $('#flagClickHint');
   const audioEl      = document.getElementById('bgAudio');
   const hostGifSrc   = $hostGif.data('src');
   const poleOnlySrc  = 'images/pole.png';
@@ -69,6 +70,7 @@
   // CSS already finger cursor + hint pulse lagata hai.
   // Click listener lagao:
   $poleImage.on('click', startPhase2);
+  $flagHint.on('click', startPhase2);
 
   gsap.to('#phase1Text .text-line', {
     opacity: 1,
@@ -78,6 +80,10 @@
     stagger: 0.35,
     delay: 0.4
   });
+
+  setTimeout(function () {
+    $('#phase1Text .activity-golden-text').addClass('is-typing');
+  }, 1150);
 
 
   /* ============================================================
@@ -89,6 +95,16 @@
   function startPhase2() {
     if (phase2Started) return;
     phase2Started = true;
+
+    gsap.to($flagHint, {
+      opacity: 0,
+      y: 12,
+      duration: 0.28,
+      ease: 'power2.out',
+      onComplete: function () {
+        $flagHint.addClass('is-hidden');
+      }
+    });
 
     $poleImage.attr('src', poleOnlySrc);
 

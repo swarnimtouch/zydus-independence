@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zydus | Certificate</title>
 
+  <link rel="preload" as="image" href="{{ asset('images/Certificate.jpg') }}" />
+  @if(!empty($photoUrl))
+  <link rel="preload" as="image" href="{{ $photoUrl }}" />
+  @endif
+  <link rel="preload" as="image" href="{{ asset('images/desktop.png') }}" media="(min-width: 768px)" />
+  <link rel="preload" as="image" href="{{ asset('images/mobile.png') }}" media="(max-width: 767px)" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
 </head>
@@ -13,14 +19,14 @@
   <main class="certificate-page-wrap">
     <section class="certificate-shell" aria-label="Certificate preview">
       <div class="certificate-sheet">
-        <img src="{{ asset('images/Certificate.jpg') }}" alt="Certificate" class="certificate-bg" />
-        <img src="{{ $photoUrl }}" alt="{{ $user->name }}" class="certificate-user-photo" />
+        <img src="{{ asset('images/Certificate.jpg') }}" alt="Certificate" class="certificate-bg" loading="eager" decoding="async" fetchpriority="high" />
+        <img src="{{ $photoUrl }}" alt="{{ $user->name }}" class="certificate-user-photo" loading="eager" decoding="async" fetchpriority="high" />
         <div class="certificate-user-name">{{ $user->name }}</div>
       </div>
     </section>
 
     <div class="certificate-actions">
-      <a href="{{ route('certificate.download', ['u' => request('u')]) }}" class="certificate-action-btn certificate-download-btn">
+      <a href="{{ route('certificate.download') }}" class="certificate-action-btn certificate-download-btn">
         Download
       </a>
       <a href="{{ route('form.create') }}" class="certificate-action-btn certificate-register-btn">

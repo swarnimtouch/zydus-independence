@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zydus | Hoist The Flag</title>
 
+  <link rel="preload" as="image" href="{{ asset('images/logo.png') }}" />
+  <link rel="preload" as="image" href="{{ asset('images/pole_with_flag.png') }}" />
+  <link rel="preload" as="image" href="{{ asset('images/pole.png') }}" />
+  <link rel="preload" as="image" href="{{ asset('images/host.gif') }}" />
+  <link rel="preload" as="image" href="{{ asset('images/desktop_2.png') }}" media="(min-width: 768px)" />
+  <link rel="preload" as="image" href="{{ asset('images/mobile_2.png') }}" media="(max-width: 767px)" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
 
@@ -22,7 +28,7 @@
   </svg>
 
   <div class="brand-logo">
-    <img src="{{ asset('images/logo.png') }}" alt="Zydus Logo" />
+    <img src="{{ asset('images/logo.png') }}" alt="Zydus Logo" loading="eager" decoding="async" fetchpriority="high" />
 
   </div>
 
@@ -35,10 +41,14 @@
           <div class="flag-stage pole-stage" id="flagStage">
             <div class="pole-scene">
               <img src="{{ asset('images/pole_with_flag.png') }}" alt="Flag Pole"
-                   class="pole-image" id="poleImage" />
+                   class="pole-image" id="poleImage" loading="eager" decoding="async" fetchpriority="high" />
 
               <img data-src="{{ asset('images/host.gif') }}" alt="Waving Flag"
                    class="host-gif is-hidden" id="hostGif" />
+
+              <button type="button" class="flag-click-hint" id="flagClickHint">
+                Click on flag to host it
+              </button>
             </div>
           </div>
         </div>
@@ -50,7 +60,10 @@
           <div class="activity-text activity-hero-text text-block" id="phase1Text">
             <span class="text-line lg dark-text">Hoist the flag to</span>
             <span class="text-line lg dark-text">celebrate the</span>
-            <span class="text-line xl gold-gradient-text typewriter activity-golden-text">GOLDEN MOMENTS</span>
+            <span class="text-line xl gold-gradient-text typewriter activity-golden-text golden-two-line">
+              <span class="golden-word">GOLDEN</span>
+              <span class="golden-word">MOMENTS</span>
+            </span>
             <span class="text-line lg dark-text">of Indians through</span>
             <span class="text-line lg activity-purity-line">
               <span class="heartwise-text">HEART WISE</span>
@@ -79,7 +92,7 @@
       </div>
 
       <div class="activity-final-logo final-animate">
-        <img src="{{ asset('images/atorva.png') }}" alt="Atorva Gold" />
+        <img src="{{ asset('images/atorva.png') }}" alt="Atorva Gold" loading="eager" decoding="async" />
 
       </div>
 
@@ -96,7 +109,7 @@
 
 
     <!-- Arrow button (Phase 3 tak hidden) -->
-    <a href="{{ route('atorva.gold', ['u' => request('u')]) }}" class="btn-next is-hidden" id="activityArrowBtn" aria-label="Continue"><span aria-hidden="true">&gt;&gt;</span></a>
+    <a href="{{ route('atorva.gold') }}" class="btn-next is-hidden" id="activityArrowBtn" aria-label="Continue"><span aria-hidden="true">&gt;&gt;</span></a>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

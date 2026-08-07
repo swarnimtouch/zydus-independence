@@ -20,6 +20,8 @@ class UserController extends Controller
      */
     public function create(): View
     {
+        session()->forget('certificate_user_token');
+
         return view('form.create');
     }
 
@@ -87,7 +89,9 @@ class UserController extends Controller
 
         $user = User::create($validated);
 
-        return redirect()->route('second', ['u' => $user->certificate_token])
+        session(['certificate_user_token' => $user->certificate_token]);
+
+        return redirect()->route('second')
             ->with('success', 'Form submitted successfully!');
     }
 
@@ -142,7 +146,7 @@ class UserController extends Controller
 
     private function certificateUser(Request $request): ?User
     {
-        $token = $request->query('u');
+        $token = $request->session()->get('certificate_user_token');
 
         if (!$token) {
             return null;
