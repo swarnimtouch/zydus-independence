@@ -32,7 +32,8 @@ class UserController extends Controller
 
 
 
-        User::create($validated);
+        $user=User::create($validated);
+        session(['user_id' => $user->id]);
 
         return redirect()->route('second')
         ->with('success', 'Form submitted successfully!');
@@ -57,5 +58,54 @@ class UserController extends Controller
     public function atorvaGold()
     {
         return view('atorva_gold');
+    }
+    public function certificate()
+    {
+        $user = User::findOrFail(session('user_id'));
+
+        // Certificate image
+        $imagePath = public_path('images/certificate.jpg');
+        $image = imagecreatefromjpeg($imagePath);
+
+        // Text color
+        $black = imagecolorallocate($image, 0, 0, 0);
+
+        // Font
+        $font = public_path('fonts/Poppins-Bold.ttf');
+
+        // User name
+        $name = $user->name;
+
+        // Font size
+        $fontSize = 40;
+
+        // Center text at X = 500
+        $bbox = imagettfbbox($fontSize, 0, $font, $name);
+        $textWidth = $bbox[2] - $bbox[0];
+
+        $x = 500 - ($textWidth / 2);
+        $y = 500;
+
+        // Write name
+        imagettftext(
+            $image,
+            $fontSize,
+            0,
+            $x,
+            $y,
+            $black,
+            $font,
+            $name
+        );
+
+        // Output image
+        ob_start();
+        imagejpeg($image, null, 100);
+        $imageData = ob_get_clean();
+
+        imagedestroy($image);
+
+        return response($imageData)
+            ->header('Content-Type', 'image/jpeg');
     }
 }
