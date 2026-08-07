@@ -122,32 +122,49 @@ body.activity-page{
   from{opacity:0; transform:translateY(20px);}
   to  {opacity:1; transform:translateY(0);}
 }
+@keyframes btnNextPulse{
+  0%,100%{scale:1;}
+  50%{scale:1.14;}
+}
 
 .btn-next{
   position:fixed;
   bottom:60px;
   right:40px;
-  display:inline-block;
-  padding:14px 40px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:72px;
+  height:72px;
+  padding:0;
   font-family:'Poppins',sans-serif;
-  font-weight:600;
-  font-size:1rem;
-  letter-spacing:1.5px;
-  text-transform:uppercase;
+  font-weight:900;
+  font-size:1.45rem;
+  line-height:1;
+  letter-spacing:0;
   text-decoration:none;
   color:#fff;
   background:var(--grad-btn);
   background-size:200% 200%;
   border:none;
-  border-radius:50px;
+  border-radius:50%;
   cursor:pointer;
   box-shadow:var(--shadow-gold);
   z-index:100;
-  transition:transform .35s ease, box-shadow .35s ease;
-  animation:gradientShift 4s ease infinite, btnFadeIn 1.5s ease .8s both;
+  scale:1;
+  transition:transform .35s ease, scale .35s ease, box-shadow .35s ease;
+  animation:
+    gradientShift 4s ease infinite,
+    btnFadeIn 1.5s ease .8s both,
+    btnNextPulse 1.35s ease-in-out 2.4s infinite;
+}
+.btn-next span{
+  display:block;
+  transform:translateX(1px);
 }
 .btn-next:hover{
-  transform:translateY(-3px) scale(1.05);
+  transform:translateY(-3px);
+  scale:1.18;
   box-shadow:0 12px 30px rgba(212,175,55,.65);
 }
 
@@ -157,10 +174,15 @@ body.activity-page{
     right:20px; /* Center se hata kar right corner set kiya */
     left:auto; /* Left clear kiya */
     transform:none; /* TranslateX hata diya */
-    padding:12px 32px;
-    font-size:.9rem;
+    width:58px;
+    height:58px;
+    padding:0;
+    font-size:1.15rem;
   }
-  .btn-next:hover{transform:translateY(-3px) scale(1.05);} /* Hover updated */
+  .btn-next:hover{
+    transform:translateY(-3px);
+    scale:1.15;
+  } /* Hover updated */
 }
 
 /* Utility */
@@ -1653,6 +1675,89 @@ body.atorva-page::after{
   }
   .feature-item p{
     font-size:.76rem;
+  }
+}
+
+/* ---------- Atorva Gold image-only page ---------- */
+body.atorva-page{
+  width:100%;
+  min-height:100vh;
+  height:100vh;
+  margin:0;
+  overflow:hidden;
+  background:#fff;
+}
+
+body.atorva-page::after,
+.atorva-slide::before{
+  content:none;
+  display:none;
+}
+
+.atorva-slide{
+  width:100vw;
+  height:100vh;
+  min-height:0;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  color:inherit;
+  font-family:inherit;
+  background:#fff;
+}
+
+.atorva-picture{
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+.atorva-bg-image{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:fill;
+  object-position:center top;
+  border:0;
+}
+
+@media (min-width:768px) and (max-width:1024px){
+  body.atorva-page{
+    height:100vh;
+    overflow:hidden;
+  }
+
+  .atorva-slide{
+    height:100vh;
+    overflow:hidden;
+  }
+}
+
+@media (max-width:767px){
+  body.atorva-page{
+    height:auto;
+    min-height:100vh;
+    overflow-x:hidden;
+    overflow-y:auto;
+  }
+
+  .atorva-slide{
+    width:100%;
+    height:auto;
+    min-height:100vh;
+    padding:0;
+    overflow:visible;
+  }
+
+  .atorva-picture{
+    height:auto;
+  }
+
+  .atorva-bg-image{
+    width:100%;
+    height:auto;
+    object-fit:contain;
+    object-position:center top;
   }
 }
 

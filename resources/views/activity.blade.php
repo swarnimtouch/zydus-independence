@@ -95,8 +95,8 @@
     <audio id="bgAudio" src="{{ asset('images/audio.mp3') }}" preload="auto" loop></audio>
 
 
-    <!-- Next button (Phase 3 tak hidden) -->
-    <a href="{{ route('atorva.gold') }}" class="btn-next is-hidden" id="activityNextBtn">Next</a>
+    <!-- Arrow button (Phase 3 tak hidden) -->
+    <a href="{{ route('atorva.gold') }}" class="btn-next is-hidden" id="activityArrowBtn" aria-label="Continue"><span aria-hidden="true">&gt;&gt;</span></a>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
