@@ -34,8 +34,28 @@ class UserController extends Controller
 
         User::create($validated);
 
-        return redirect()
-            ->route('form.create')
-            ->with('success', 'Form submitted successfully!');
+        return redirect()->route('second')
+        ->with('success', 'Form submitted successfully!');
+    }
+
+    public function second()
+    {
+        return view('second');
+    }
+
+    public function third()
+    {
+        return view('third');
+    }
+
+    public function activity()
+    {
+        return view('activity');
+    }
+
+
+    public function atorvaGold()
+    {
+        return view('atorva_gold');
     }
 }

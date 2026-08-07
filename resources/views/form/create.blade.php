@@ -1,57 +1,72 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Details Form</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zydus | Independence Day 2026 — Welcome</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Global stylesheet -->
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+
 </head>
 <body>
 
-    <div class="form-wrapper">
-        <h1>Fill Your Details</h1>
+  <!-- Zydus Logo -->
+  <div class="brand-logo">
+    <img src="{{ asset('images/logo.png') }}" alt="Zydus Logo" />
+  </div>
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+  <!-- Page Content -->
+  <div class="page-wrapper d-flex align-items-center justify-content-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
 
-        @if ($errors->any())
-            <div class="alert alert-error">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+          <div class="form-card">
+            <h1 class="form-title">Independence Day 2026</h1>
+            <p class="form-subtitle">ZYDUS • 15<sup>TH</sup> AUGUST CELEBRATION</p>
 
-        <form id="detailsForm" action="{{ route('form.store') }}" method="POST" novalidate>
-            @csrf
+            <!-- novalidate: browser default validation disable, jQuery Validation use karenge -->
+            <form id="welcomeForm" action="{{ route('form.store') }}" method="POST" novalidate>
+                @csrf
+              <div class="mb-3">
+                <label class="form-label-custom" for="name">Name</label>
+                <input type="text" id="name" name="name"
+                       class="form-control-custom" value="{{ old('name') }}"  placeholder="Enter your full name" />
+              </div>
 
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Enter your name">
-                <span class="error-text" id="nameError"></span>
-            </div>
+              <div class="mb-3">
+                <label class="form-label-custom" for="city">City</label>
+                <input type="text" id="city" name="city" value="{{ old('city') }}" 
+                       class="form-control-custom" placeholder="Enter your city" />
+              </div>
 
-            <div class="form-group">
-                <label for="city">City</label>
-                <input type="text" id="city" name="city" value="{{ old('city') }}" placeholder="Enter your city">
-                <span class="error-text" id="cityError"></span>
-            </div>
+              <div class="mb-3">
+                <label class="form-label-custom" for="speciality">Speciality</label>
+                <input type="text" id="speciality" name="speciality" value="{{ old('speciality') }}" 
+                       class="form-control-custom" placeholder="Enter your speciality" />
+              </div>
 
-            <div class="form-group">
-                <label for="speciality">Speciality</label>
-                <input type="text" id="speciality" name="speciality" value="{{ old('speciality') }}" placeholder="Enter your speciality">
-                <span class="error-text" id="specialityError"></span>
-            </div>
+              <button type="submit" class="btn-submit">Submit</button>
+            </form>
+          </div>
 
-            <button type="submit" class="btn-submit">Submit</button>
-        </form>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script src="{{ asset('js/style.js') }}"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- jQuery Validation Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+  <!-- Bootstrap Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Page Script -->
+    <script src="{{ asset('js/index.js') }}"></script>
+
 </body>
 </html>
+
