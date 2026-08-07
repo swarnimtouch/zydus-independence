@@ -624,16 +624,56 @@ body.bg-slide-2 {
 
 /* Typewriter Animation Class */
 .text-line.typewriter {
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  /* border-right hata diya gaya hai, isse vertical cursor nahi aayega */
-  width: 0;
-  animation: typing 2s steps(13, end) 1.2s forwards; /* blink animation hata diya */
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  width:auto;
+  max-width:100%;
+  overflow:visible;
+  white-space:normal;
+  animation:none;
+}
+.golden-two-line{
+  gap:.04em;
+  line-height:.9;
+}
+.golden-two-line .golden-word{
+  display:block;
+  overflow:hidden;
+  white-space:nowrap;
+  clip-path:inset(0 100% 0 0);
+  background:inherit;
+  background-size:inherit;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent;
+  animation:shineGold 3s linear infinite;
+}
+.golden-two-line.is-typing .golden-word{
+  animation:typingGoldenWord .85s steps(8,end) forwards, shineGold 3s linear infinite;
+}
+.golden-two-line.is-typing .golden-word:nth-child(2){
+  animation-delay:.82s, 0s;
 }
 @keyframes typing {
   from { width: 0 }
   to { width: 100% }
+}
+@keyframes typingGoldenWord {
+  to { clip-path:inset(0 0 0 0); }
+}
+.bg-slide-2 .golden-two-line,
+.bg-slide-3 .golden-two-line,
+.activity-page #phase1Text .golden-two-line{
+  align-items:flex-start !important;
+  text-align:left !important;
+}
+.activity-page #phase1Text{
+  text-align:left !important;
+}
+.activity-page #phase1Text .activity-purity-line{
+  justify-content:flex-start !important;
 }
 
 /* Modern Brownish-Golden Date Badge */
@@ -749,6 +789,43 @@ body.bg-slide-2 {
   pointer-events:none;
   filter:drop-shadow(0 8px 20px rgba(0,0,0,.45));
   transform-origin:left center;
+}
+.flag-click-hint{
+  position:absolute;
+  left:50%;
+  bottom:28px;
+  transform:translateX(-50%);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:245px;
+  padding:11px 18px;
+  border:0;
+  border-radius:999px;
+  color:#fff;
+  background:var(--grad-btn);
+  background-size:200% 200%;
+  box-shadow:var(--shadow-gold);
+  font-family:'Poppins',sans-serif;
+  font-weight:800;
+  font-size:.92rem;
+  line-height:1.1;
+  cursor:pointer;
+  z-index:4;
+  animation:gradientShift 4s ease infinite, flagHintPulse 1.35s ease-in-out infinite;
+}
+.flag-click-hint::after{
+  content:'';
+  width:7px;
+  height:7px;
+  margin-left:9px;
+  border-top:2px solid currentColor;
+  border-right:2px solid currentColor;
+  transform:rotate(45deg);
+}
+@keyframes flagHintPulse{
+  0%,100%{scale:1;}
+  50%{scale:1.08;}
 }
 
 /* Static (folded) flag — Phase 1 */
@@ -1043,7 +1120,21 @@ body.bg-slide-2 {
 }
 
 @media (min-width:768px) and (max-width:1180px) and (orientation:portrait){
+  .activity-page .page-wrapper{
+    display:grid;
+    place-items:center;
+    padding:6.25rem 1rem 4.25rem;
+  }
+  .activity-page .content-row{
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+  }
   .activity-page .content-row > [class*="col-md-6"]{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
     flex:0 0 100%;
     max-width:100%;
     width:100%;
@@ -1054,9 +1145,9 @@ body.bg-slide-2 {
   }
   .activity-page .pole-scene{
     width:430px;
-    height:560px;
+    height:590px;
     margin:0 auto;
-    transform:none;
+    transform:translateX(-34px);
   }
   .activity-page .pole-image{
     width:320px;
@@ -1065,6 +1156,9 @@ body.bg-slide-2 {
     top:78px;
     left:calc(50% + 4px);
     width:242px;
+  }
+  .activity-page .flag-click-hint{
+    bottom:8px;
   }
   .activity-page .activity-hero-text{
     text-align:center;
@@ -1083,32 +1177,46 @@ body.bg-slide-2 {
   }
   .activity-final-layout{
     min-height:100vh;
+    display:block;
+    text-align:center;
   }
   .activity-final-top{
-    top:6.5rem;
+    left:50%;
+    top:6.25rem;
+    transform:translateX(-50%);
+    width:92vw;
     font-size:1.55rem;
   }
   .activity-final-preserve{
-    top:58%;
+    top:52%;
     left:50%;
     transform:translateX(-50%);
     width:360px;
   }
   .activity-final-logo{
-    top:72%;
+    left:50%;
+    top:68%;
+    transform:translateX(-50%);
   }
   .activity-final-day{
-    top:84%;
+    left:50%;
+    top:82%;
+    transform:translateX(-50%);
+    width:90vw;
   }
 }
 
 @media (min-width:768px) and (max-width:1180px) and (orientation:landscape){
   .activity-page .page-wrapper{
-    padding:5rem 1rem 3.5rem;
+    padding:4.4rem 1rem 3.25rem;
+  }
+  .activity-page .content-row{
+    min-height:calc(100vh - 7.65rem);
+    align-items:center;
   }
   .activity-page .pole-scene{
     width:390px;
-    height:500px;
+    height:520px;
     transform:translateX(-24px);
   }
   .activity-page .pole-image{
@@ -1118,6 +1226,12 @@ body.bg-slide-2 {
     top:70px;
     left:calc(50% + 4px);
     width:222px;
+  }
+  .activity-page .flag-click-hint{
+    bottom:8px;
+    min-width:220px;
+    font-size:.8rem;
+    padding:9px 14px;
   }
   .activity-page .activity-hero-text{
     padding:.5rem 0;
@@ -1131,12 +1245,16 @@ body.bg-slide-2 {
     line-height:1;
   }
   .activity-final-top{
-    top:12%;
+    left:50%;
+    top:10%;
+    transform:translateX(-50%);
+    width:92vw;
     font-size:1.35rem;
   }
   .activity-final-preserve{
     top:34%;
-    left:58%;
+    left:50%;
+    transform:translateX(-50%);
     width:285px;
   }
   .preserve-label{
@@ -1146,13 +1264,18 @@ body.bg-slide-2 {
     font-size:1.9rem;
   }
   .activity-final-logo{
-    top:58%;
+    left:50%;
+    top:57%;
+    transform:translateX(-50%);
   }
   .activity-final-logo img{
     width:155px;
   }
   .activity-final-day{
-    top:75%;
+    left:50%;
+    top:76%;
+    transform:translateX(-50%);
+    width:88vw;
   }
   .activity-final-day span{
     font-size:1rem;
@@ -1213,6 +1336,90 @@ body.bg-slide-2 {
   }
   .activity-hero-text .activity-golden-text{
     font-size:2.95rem;
+  }
+}
+
+@media (min-width:768px) and (max-width:1366px) and (orientation:portrait){
+  .activity-page .pole-scene{
+    height:590px;
+    transform:translateX(-34px);
+  }
+  .activity-page .flag-click-hint{
+    bottom:8px;
+  }
+  .activity-page .activity-final-top,
+  .activity-page .activity-final-preserve,
+  .activity-page .activity-final-logo,
+  .activity-page .activity-final-day{
+    left:50%;
+    transform:translateX(-50%);
+    text-align:center;
+  }
+  .activity-page .activity-final-preserve{
+    top:52%;
+  }
+  .activity-page .activity-final-logo{
+    top:68%;
+  }
+  .activity-page .activity-final-day{
+    top:82%;
+  }
+  .activity-page.activity-final-active .pole-scene{
+    transform:translateX(-185px) scale(.86);
+    transform-origin:center center;
+  }
+  .activity-page.activity-final-active .activity-final-preserve{
+    left:73%;
+    top:43%;
+    width:270px;
+    transform:translate(-50%,-50%);
+  }
+  .activity-page.activity-final-active .preserve-label{
+    font-size:1.35rem;
+  }
+  .activity-page.activity-final-active .activity-final-preserve .final-golden-text{
+    font-size:2rem;
+  }
+  .activity-page.activity-final-active .activity-final-logo{
+    top:68%;
+  }
+  .activity-page.activity-final-active .activity-final-day{
+    top:82%;
+  }
+}
+
+@media (min-width:768px) and (max-width:1366px) and (orientation:landscape){
+  .activity-page .pole-scene{
+    height:520px;
+  }
+  .activity-page .flag-click-hint{
+    bottom:8px;
+  }
+  .activity-page .activity-final-top,
+  .activity-page .activity-final-preserve,
+  .activity-page .activity-final-logo,
+  .activity-page .activity-final-day{
+    left:50%;
+    transform:translateX(-50%);
+    text-align:center;
+  }
+  .activity-page.activity-final-active .activity-final-preserve{
+    left:72%;
+    top:42%;
+    width:300px;
+    transform:translate(-50%,-50%);
+  }
+  .activity-page.activity-final-active .preserve-label{
+    font-size:1.3rem;
+  }
+  .activity-page.activity-final-active .activity-final-preserve .final-golden-text{
+    font-size:2rem;
+  }
+  .activity-page.activity-final-active .activity-final-logo{
+    top:60%;
+  }
+  .activity-page.activity-final-active .activity-final-day{
+    top:77%;
   }
 }
 
@@ -2083,6 +2290,47 @@ body.atorva-page::after,
   .product-wrapper{padding:1.8rem 1.2rem;}
   .product-title{font-size:1.8rem;}
   .form-card{padding:2rem 1.4rem;}
+  body:not(.bg-slide-2):not(.bg-slide-3):not(.activity-page):not(.atorva-page):not(.certificate-page) .page-wrapper{
+    padding-top:11rem;
+  }
+  body.bg-slide-2 .page-wrapper{
+    display:grid;
+    place-items:center;
+    padding:7.5rem 1rem 5rem;
+  }
+  body.bg-slide-2 .page-wrapper > .container{
+    width:100%;
+    max-width:100%;
+    margin:0 auto;
+    padding-left:0;
+    padding-right:0;
+  }
+  body.bg-slide-2 .content-row{
+    width:100%;
+    margin-left:0;
+    margin-right:0;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+  }
+  body.bg-slide-2 .content-row > [class*="col-"]{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    padding-left:0;
+    padding-right:0;
+  }
+  body.bg-slide-2 .text-block{
+    width:100%;
+    max-width:340px;
+    margin:0 auto;
+    padding:1.4rem .75rem 0;
+  }
+  body.bg-slide-2 .image-frame{
+    max-width:min(78vw, 280px);
+    margin:0 auto;
+  }
 
   /* --- Index Page Text Size Reduction for Mobile --- */
   .form-title{font-size:1.4rem;}             /* Title chhota kiya */
@@ -2208,9 +2456,9 @@ body.atorva-page::after,
   }
   .activity-page .pole-scene{
     width:280px;
-    height:390px;
+    height:415px;
     margin:0 auto;
-    transform:none;
+    transform:translateX(-22px);
   }
   .activity-page .pole-image{
     width:250px;
@@ -2219,6 +2467,12 @@ body.atorva-page::after,
     top:37px;
     left:calc(50% + 4px);
     width:176px;
+  }
+  .activity-page .flag-click-hint{
+    bottom:0;
+    min-width:215px;
+    padding:9px 14px;
+    font-size:.78rem;
   }
   .activity-page .activity-hero-text{
     text-align:center;
@@ -2249,18 +2503,22 @@ body.atorva-page::after,
   .activity-final-layout{
     position:absolute;
     min-height:100vh;
+    text-align:center;
   }
   .activity-final-top{
-    top:5.35rem;
+    left:50%;
+    top:5.15rem;
+    transform:translateX(-50%);
     width:94vw;
     font-size:1.02rem;
     line-height:1.22;
   }
   .activity-final-preserve{
-    top:57%;
+    top:50%;
     left:50%;
     transform:translateX(-50%);
     width:86vw;
+    text-align:center;
   }
   .preserve-label{
     font-size:1.05rem;
@@ -2271,7 +2529,7 @@ body.atorva-page::after,
     line-height:.92;
   }
   .activity-final-logo{
-    top:69%;
+    top:65%;
     left:50%;
     transform:translateX(-50%);
   }
@@ -2279,7 +2537,9 @@ body.atorva-page::after,
     width:128px;
   }
   .activity-final-day{
-    top:82%;
+    left:50%;
+    top:78%;
+    transform:translateX(-50%);
     width:92vw;
   }
   .activity-final-day span{
@@ -2306,9 +2566,9 @@ body.atorva-page::after,
   }
   .activity-page .pole-scene{
     width:260px;
-    height:330px;
+    height:350px;
     margin:0 auto;
-    transform:none;
+    transform:translateX(-18px);
   }
   .activity-page .pole-image{
     width:215px;
@@ -2316,6 +2576,12 @@ body.atorva-page::after,
   .activity-page .host-gif{
     top:29px;
     width:156px;
+  }
+  .activity-page .flag-click-hint{
+    bottom:0;
+    min-width:200px;
+    padding:8px 12px;
+    font-size:.72rem;
   }
   .activity-page .activity-hero-text{
     padding:.5rem 0 1rem;
@@ -2332,23 +2598,31 @@ body.atorva-page::after,
     gap:6px;
   }
   .activity-final-top{
-    top:4.2rem;
+    left:50%;
+    top:4rem;
+    transform:translateX(-50%);
     font-size:.95rem;
   }
   .activity-final-preserve{
-    top:58%;
+    left:50%;
+    top:48%;
+    transform:translateX(-50%);
   }
   .activity-final-preserve .final-golden-text{
     font-size:1.28rem;
   }
   .activity-final-logo{
-    top:71%;
+    left:50%;
+    top:64%;
+    transform:translateX(-50%);
   }
   .activity-final-logo img{
     width:112px;
   }
   .activity-final-day{
-    top:84%;
+    left:50%;
+    top:78%;
+    transform:translateX(-50%);
   }
   .activity-final-day strong{
     font-size:1.05rem;
@@ -2358,7 +2632,8 @@ body.atorva-page::after,
 @media (max-width:420px){
   .activity-page .pole-scene{
     width:245px;
-    height:345px;
+    height:370px;
+    transform:translateX(-20px);
   }
   .activity-page .pole-image{
     width:220px;
@@ -2366,6 +2641,11 @@ body.atorva-page::after,
   .activity-page .host-gif{
     top:33px;
     width:154px;
+  }
+  .activity-page .flag-click-hint{
+    bottom:0;
+    min-width:195px;
+    font-size:.7rem;
   }
   .activity-page .activity-hero-text .text-line.lg{
     font-size:1.14rem;

@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zydus | Independence Day 2026 — Welcome</title>
 
+  <link rel="preload" as="image" href="{{ asset('images/logo.png') }}" />
+  <link rel="preload" as="image" href="{{ asset('images/desktop.png') }}" media="(min-width: 768px)" />
+  <link rel="preload" as="image" href="{{ asset('images/mobile.png') }}" media="(max-width: 767px)" />
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css" />
@@ -16,7 +19,7 @@
 
   <!-- Zydus Logo -->
   <div class="brand-logo">
-    <img src="{{ asset('images/logo.png') }}" alt="Zydus Logo" />
+    <img src="{{ asset('images/logo.png') }}" alt="Zydus Logo" loading="eager" decoding="async" fetchpriority="high" />
   </div>
 
   <!-- Page Content -->

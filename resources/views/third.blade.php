@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zydus | Every ACS Patient Deserves Golden Moments</title>
 
+  <link rel="preload" as="image" href="{{ asset('images/logo.png') }}" />
+  <link rel="preload" as="image" href="{{ asset('images/doctor.png') }}" />
+  <link rel="preload" as="image" href="{{ asset('images/desktop.png') }}" media="(min-width: 768px)" />
+  <link rel="preload" as="image" href="{{ asset('images/mobile.png') }}" media="(max-width: 767px)" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
 
@@ -12,7 +16,7 @@
 <body class="bg-slide-3">
 
   <div class="brand-logo">
-     <img src="{{ asset('images/logo.png') }}" alt="Zydus Logo" />
+     <img src="{{ asset('images/logo.png') }}" alt="Zydus Logo" loading="eager" decoding="async" fetchpriority="high" />
   </div>
 
   <div class="page-wrapper">
@@ -24,7 +28,7 @@
         <div class="col-12 col-md-6 text-center mb-4 mb-md-0 doctor-col">
           <!-- doctor-frame class add ki image size kam karne ke liye -->
           <div class="image-frame doctor-frame">
-            <img src="{{ asset('images/doctor.png') }}" alt="Doctor" />
+            <img src="{{ asset('images/doctor.png') }}" alt="Doctor" loading="eager" decoding="async" fetchpriority="high" />
           </div>
         </div>
 
@@ -34,13 +38,16 @@
           <span class="text-line lg dark-text">Doctor,</span>
           <span class="text-line lg dark-text">it's time to relive those</span>
           <!-- Gold gradient text with Typewriter animation -->
-          <span class="text-line xl gold-gradient-text typewriter">GOLDEN MOMENTS</span>
+          <span class="text-line xl gold-gradient-text typewriter golden-two-line">
+            <span class="golden-word">GOLDEN</span>
+            <span class="golden-word">MOMENTS</span>
+          </span>
         </div>
 
       </div>
     </div>
 
-    <a href="{{ route('activity', ['u' => request('u')]) }}" class="btn-next" aria-label="Continue"><span aria-hidden="true">&gt;&gt;</span></a>
+    <a href="{{ route('activity') }}" class="btn-next" aria-label="Continue"><span aria-hidden="true">&gt;&gt;</span></a>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
