@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Zydus | The First Golden Moment</title>
 
   <link rel="preload" as="image" href="{{ asset('images/logo.png') }}" />
@@ -51,6 +51,7 @@
     <a href="{{ route('third') }}" class="btn-next" aria-label="Continue"><span aria-hidden="true">&gt;&gt;</span></a>
   </div>
 
+  <script src="{{ asset('js/viewport-fit.js') }}"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="{{ asset('js/second.js') }}"></script>

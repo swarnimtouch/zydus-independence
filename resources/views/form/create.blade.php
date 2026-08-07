@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Zydus | Independence Day 2026 — Welcome</title>
 
   <link rel="preload" as="image" href="{{ asset('images/logo.png') }}" />
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
 
 </head>
-<body>
+<body class="form-page">
 
   <!-- Zydus Logo -->
   <div class="brand-logo">
@@ -29,6 +29,9 @@
         <div class="col-12 col-md-8 col-lg-6">
 
           <div class="form-card">
+            <div class="form-card-logo">
+              <img src="{{ asset('images/logo.png') }}" alt="Zydus Logo" loading="eager" decoding="async" />
+            </div>
             <h1 class="form-title">Independence Day 2026</h1>
             <p class="form-subtitle">ZYDUS • 15<sup>TH</sup> AUGUST CELEBRATION</p>
 
@@ -113,6 +116,7 @@
       </div>
   </div>
 
+  <script src="{{ asset('js/viewport-fit.js') }}"></script>
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <!-- jQuery Validation Plugin -->

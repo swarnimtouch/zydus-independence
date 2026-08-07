@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Zydus | Atorva Gold</title>
 
   <link rel="preload" as="image" href="{{ asset('images/atorva_desktop_bg.png') }}" media="(min-width: 1025px)" />
@@ -24,6 +24,7 @@
     <a href="{{ route('certificate') }}" class="btn-next" aria-label="Continue"><span aria-hidden="true">&gt;&gt;</span></a>
   </main>
 
+  <script src="{{ asset('js/viewport-fit.js') }}"></script>
   <script src="{{ asset('js/AtorvaGold.js') }}"></script>
 
 </body>
