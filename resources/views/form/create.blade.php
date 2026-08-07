@@ -28,29 +28,41 @@
             <h1 class="form-title">Independence Day 2026</h1>
             <p class="form-subtitle">ZYDUS • 15<sup>TH</sup> AUGUST CELEBRATION</p>
 
-            <!-- novalidate: browser default validation disable, jQuery Validation use karenge -->
-            <form id="welcomeForm" action="{{ route('form.store') }}" method="POST" novalidate>
-                @csrf
-              <div class="mb-3">
-                <label class="form-label-custom" for="name">Name</label>
-                <input type="text" id="name" name="name"
-                       class="form-control-custom" value="{{ old('name') }}"  placeholder="Enter your full name" />
-              </div>
+              <form id="welcomeForm" action="{{ route('form.store') }}" method="POST" enctype="multipart/form-data" novalidate>
+                  @csrf
 
-              <div class="mb-3">
-                <label class="form-label-custom" for="city">City</label>
-                <input type="text" id="city" name="city" value="{{ old('city') }}" 
-                       class="form-control-custom" placeholder="Enter your city" />
-              </div>
+                  <div class="mb-3">
+                      <label class="form-label-custom">BO Code</label>
+                      <input type="text" id="bo_code" name="bo_code"
+                             class="form-control-custom" placeholder="Enter BO Code">
+                      <small id="bo_codeError" class="text-danger"></small>
+                  </div>
 
-              <div class="mb-3">
-                <label class="form-label-custom" for="speciality">Speciality</label>
-                <input type="text" id="speciality" name="speciality" value="{{ old('speciality') }}" 
-                       class="form-control-custom" placeholder="Enter your speciality" />
-              </div>
+                  <div class="mb-3">
+                      <label class="form-label-custom">Doctor Code</label>
+                      <input type="text" id="doctor_code" name="doctor_code"
+                             class="form-control-custom" placeholder="Enter Doctor Code">
+                      <small id="doctor_codeError" class="text-danger"></small>
+                  </div>
 
-              <button type="submit" class="btn-submit">Submit</button>
-            </form>
+                  <div class="mb-3">
+                      <label class="form-label-custom">Name</label>
+                      <input type="text" id="name" name="name"
+                             class="form-control-custom" placeholder="Enter Name">
+                      <small id="nameError" class="text-danger"></small>
+                  </div>
+
+                  <div class="mb-3">
+                      <label class="form-label-custom">Photo</label>
+                      <input type="file" id="photo" name="photo"
+                             class="form-control-custom" accept="image/*">
+                      <small id="photoError" class="text-danger"></small>
+                  </div>
+
+                  <button type="submit" class="btn-submit">
+                      Submit
+                  </button>
+              </form>
           </div>
 
         </div>

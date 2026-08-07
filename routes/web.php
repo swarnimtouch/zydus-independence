@@ -17,3 +17,5 @@ Route::get('/third', [UserController::class, 'third'])->name('third');
 Route::get('/activity', [UserController::class, 'activity'])->name('activity');
 
 Route::get('/atorva/gold', [UserController::class, 'atorvaGold'])->name('atorva.gold');
+
+Route::get('/certificate', [UserController::class, 'certificate'])->name('certificate');

@@ -1,16 +1,62 @@
 $(document).ready(function () {
 
+    // Only numbers allowed
+    $('#bo_code, #doctor_code').on('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
     $('#welcomeForm').validate({
+
         rules: {
-            name: { required: true, minlength: 2 },
-            city: { required: true, minlength: 2 },
-            speciality: { required: true, minlength: 2 }
+            bo_code: {
+                required: true,
+                digits: true,
+                minlength: 2,
+                maxlength: 20
+            },
+
+            doctor_code: {
+                required: true,
+                digits: true,
+                minlength: 2,
+                maxlength: 20
+            },
+
+            name: {
+                required: true,
+                minlength: 2
+            },
+
+            photo: {
+                required: true,
+                extension: "jpg|jpeg|png|webp"
+            }
         },
+
         messages: {
-            name: { required: 'Please enter your name', minlength: 'Name is too short' },
-            city: { required: 'Please enter your city', minlength: 'City is too short' },
-            speciality: { required: 'Please enter your speciality', minlength: 'Speciality is too short' }
+            bo_code: {
+                required: "Please enter BO Code",
+                digits: "Only numbers are allowed",
+                minlength: "BO Code is too short"
+            },
+
+            doctor_code: {
+                required: "Please enter Doctor Code",
+                digits: "Only numbers are allowed",
+                minlength: "Doctor Code is too short"
+            },
+
+            name: {
+                required: "Please enter your name",
+                minlength: "Name is too short"
+            },
+
+            photo: {
+                required: "Please select a photo",
+                extension: "Only JPG, JPEG, PNG and WEBP images are allowed"
+            }
         },
+
         errorElement: 'span',
         errorClass: 'field-error',
 
@@ -29,14 +75,13 @@ $(document).ready(function () {
         submitHandler: function (form) {
 
             const userData = {
-                name: $('#name').val(),
-                city: $('#city').val(),
-                speciality: $('#speciality').val()
+                bo_code: $('#bo_code').val(),
+                doctor_code: $('#doctor_code').val(),
+                name: $('#name').val()
             };
 
             localStorage.setItem('zydusUser', JSON.stringify(userData));
 
-            // Laravel controller ko submit karega
             form.submit();
         }
 
