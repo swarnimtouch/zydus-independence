@@ -257,6 +257,111 @@ body.activity-page{
   transition:transform .3s ease, box-shadow .3s ease;
   animation:gradientShift 4s ease infinite;
 }
+
+/* ============================================================
+   Certificate page
+   ============================================================ */
+.certificate-page{
+  min-height:100vh;
+  overflow-x:hidden;
+  background:url('../images/desktop.png') no-repeat center center / 100% 100%;
+  font-family:'Poppins',sans-serif;
+}
+.certificate-page-wrap{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:22px;
+  padding:34px 18px;
+}
+.certificate-shell{
+  width:min(1120px, 94vw);
+  padding:12px;
+  border:1px solid rgba(212,175,55,.45);
+  border-radius:22px;
+  background:rgba(255,255,255,.9);
+  box-shadow:var(--shadow-soft);
+}
+.certificate-sheet{
+  position:relative;
+  width:100%;
+  aspect-ratio:16 / 9;
+  overflow:hidden;
+  border-radius:16px;
+  background:#fff;
+}
+.certificate-bg{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:fill;
+}
+.certificate-user-photo{
+  position:absolute;
+  left:50%;
+  top:46.75%;
+  width:17%;
+  aspect-ratio:1;
+  border-radius:50%;
+  object-fit:cover;
+  transform:translate(-50%,-50%);
+}
+.certificate-user-name{
+  position:absolute;
+  left:50%;
+  top:68.9%;
+  width:48%;
+  transform:translate(-50%,-50%);
+  color:#1f1f1f;
+  font-weight:800;
+  font-size:clamp(1.05rem, 2.55vw, 2.95rem);
+  line-height:1.1;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.certificate-actions{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.certificate-action-btn{
+  min-width:178px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px 24px;
+  border:0;
+  border-radius:999px;
+  font-family:'Poppins',sans-serif;
+  font-weight:800;
+  font-size:.95rem;
+  letter-spacing:.5px;
+  text-decoration:none;
+  color:#fff;
+  cursor:pointer;
+  transition:transform .3s ease, box-shadow .3s ease;
+}
+.certificate-download-btn{
+  background:var(--grad-btn);
+  background-size:200% 200%;
+  box-shadow:var(--shadow-gold);
+  animation:gradientShift 4s ease infinite;
+}
+.certificate-register-btn{
+  background:linear-gradient(135deg,#123b73,#0d5b46);
+  box-shadow:0 10px 24px rgba(16,52,96,.26);
+}
+.certificate-action-btn:hover{
+  color:#fff;
+  transform:translateY(-2px);
+  box-shadow:0 12px 30px rgba(16,52,96,.28);
+}
 .btn-submit:hover{
   transform:translateY(-2px);
   box-shadow:0 8px 20px rgba(0,0,0,.3);
@@ -266,6 +371,173 @@ body.activity-page{
   font-size:.8rem;
   margin-top:4px;
   display:block;
+}
+
+.photo-input-native{
+  position:absolute;
+  width:1px;
+  height:1px;
+  opacity:0;
+  pointer-events:none;
+}
+.photo-upload-box{
+  width:100%;
+}
+.photo-upload-btn{
+  width:100%;
+  min-height:92px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:16px;
+  border:2px dashed rgba(212,175,55,.72);
+  border-radius:16px;
+  background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(255,249,229,.94));
+  color:var(--navy);
+  text-align:left;
+  cursor:pointer;
+  box-shadow:0 12px 28px rgba(16,52,96,.08);
+  transition:border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+.photo-upload-btn:hover,
+.photo-upload-btn:focus-visible{
+  border-color:var(--gold);
+  box-shadow:0 14px 32px rgba(212,175,55,.25);
+  transform:translateY(-2px);
+  outline:none;
+}
+.photo-upload-icon{
+  flex:0 0 54px;
+  width:54px;
+  height:54px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#fff;
+  background:var(--grad-btn);
+  box-shadow:0 10px 22px rgba(212,175,55,.35);
+}
+.photo-upload-icon svg{
+  width:29px;
+  height:29px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.photo-upload-text strong,
+.photo-upload-text em{
+  display:block;
+}
+.photo-upload-text strong{
+  font-size:1rem;
+  font-weight:800;
+  letter-spacing:.4px;
+}
+.photo-upload-text em{
+  margin-top:4px;
+  color:#6b7280;
+  font-size:.78rem;
+  font-style:normal;
+}
+.photo-preview-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:14px 16px;
+  border:2px solid rgba(212,175,55,.45);
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 12px 28px rgba(16,52,96,.08);
+}
+.photo-preview-img{
+  flex:0 0 86px;
+  width:86px;
+  height:86px;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid #fff;
+  box-shadow:0 8px 22px rgba(16,52,96,.2), 0 0 0 2px rgba(212,175,55,.75);
+}
+.photo-change-btn,
+.crop-save-btn,
+.crop-cancel-btn{
+  border:0;
+  border-radius:999px;
+  font-family:inherit;
+  font-weight:700;
+  cursor:pointer;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.photo-change-btn{
+  padding:11px 18px;
+  color:#fff;
+  background:var(--grad-btn);
+  background-size:200% 200%;
+  box-shadow:var(--shadow-gold);
+  animation:gradientShift 4s ease infinite;
+}
+.photo-change-btn:hover,
+.crop-save-btn:hover,
+.crop-cancel-btn:hover{
+  transform:translateY(-2px);
+}
+.photo-crop-modal .modal-dialog{
+  max-width:min(92vw, 520px);
+}
+.photo-crop-modal .modal-content{
+  border:1px solid rgba(212,175,55,.42);
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 28px 70px rgba(16,52,96,.28);
+}
+.photo-crop-modal .modal-header{
+  border-bottom:1px solid rgba(212,175,55,.28);
+  background:linear-gradient(135deg,#fff,#fff7dc);
+}
+.photo-crop-modal .modal-title{
+  color:var(--navy);
+  font-weight:800;
+}
+.photo-crop-modal .modal-body{
+  padding:22px;
+  background:#fffdf7;
+}
+.cropper-shell{
+  display:grid;
+  place-items:center;
+  min-height:360px;
+}
+#photoCropper{
+  width:100%;
+  max-width:360px;
+}
+.photo-crop-modal .cr-boundary{
+  border-radius:18px;
+  box-shadow:inset 0 0 0 1px rgba(212,175,55,.22);
+}
+.photo-crop-modal .cr-slider-wrap{
+  margin:18px auto 0;
+}
+.photo-crop-modal .modal-footer{
+  gap:10px;
+  border-top:1px solid rgba(212,175,55,.28);
+  background:#fff;
+}
+.crop-cancel-btn{
+  padding:11px 20px;
+  color:var(--navy);
+  background:#eef2f7;
+}
+.crop-save-btn{
+  padding:12px 24px;
+  color:#fff;
+  background:var(--grad-btn);
+  background-size:200% 200%;
+  box-shadow:var(--shadow-gold);
+  animation:gradientShift 4s ease infinite;
 }
 
 /* ============================================================
@@ -1817,6 +2089,86 @@ body.atorva-page::after,
   .form-subtitle{font-size:.75rem; margin-bottom:1.2rem;} /* Subtitle chhota kiya */
   .form-label-custom{font-size:.8rem;}        /* Labels chhote kiye */
   .form-control-custom{font-size:.9rem; padding:10px 14px;} /* Input text chhota kiya */
+  .photo-upload-btn{
+    min-height:78px;
+    gap:12px;
+    padding:13px;
+  }
+  .photo-upload-icon{
+    flex-basis:46px;
+    width:46px;
+    height:46px;
+  }
+  .photo-upload-icon svg{
+    width:24px;
+    height:24px;
+  }
+  .photo-preview-wrap{
+    align-items:center;
+    gap:12px;
+    padding:12px;
+  }
+  .photo-preview-img{
+    flex-basis:70px;
+    width:70px;
+    height:70px;
+  }
+  .photo-change-btn{
+    padding:10px 14px;
+    font-size:.82rem;
+  }
+  .photo-crop-modal .modal-dialog{
+    max-width:calc(100vw - 22px);
+    margin:.75rem auto;
+  }
+  .photo-crop-modal .modal-body{
+    padding:14px;
+  }
+  .cropper-shell{
+    min-height:300px;
+  }
+  #photoCropper{
+    max-width:300px;
+  }
+  .photo-crop-modal .modal-footer{
+    justify-content:space-between;
+  }
+  .crop-save-btn,
+  .crop-cancel-btn{
+    flex:1;
+    padding:11px 12px;
+    font-size:.88rem;
+  }
+  .certificate-page{
+    background:url('../images/mobile.png') no-repeat center center / 100% 100%;
+  }
+  .certificate-page-wrap{
+    justify-content:flex-start;
+    gap:16px;
+    padding:72px 12px 24px;
+  }
+  .certificate-shell{
+    width:100%;
+    padding:7px;
+    border-radius:16px;
+  }
+  .certificate-sheet{
+    border-radius:12px;
+  }
+  .certificate-user-name{
+    width:56%;
+    font-size:clamp(.62rem, 3.2vw, 1rem);
+  }
+  .certificate-actions{
+    width:100%;
+    gap:10px;
+  }
+  .certificate-action-btn{
+    flex:1 1 150px;
+    min-width:0;
+    padding:12px 14px;
+    font-size:.84rem;
+  }
 
   /* --- Third Page (Doctor) Text Size & Center for Mobile --- */
   .doctor-text {
