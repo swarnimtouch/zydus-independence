@@ -96,7 +96,7 @@
 
 
     <!-- Arrow button (Phase 3 tak hidden) -->
-    <a href="{{ route('atorva.gold') }}" class="btn-next is-hidden" id="activityArrowBtn" aria-label="Continue"><span aria-hidden="true">&gt;&gt;</span></a>
+    <a href="{{ route('atorva.gold', ['u' => request('u')]) }}" class="btn-next is-hidden" id="activityArrowBtn" aria-label="Continue"><span aria-hidden="true">&gt;&gt;</span></a>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

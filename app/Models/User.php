@@ -31,6 +31,8 @@ class User extends Authenticatable
         'bo_code',
         'doctor_code',
         'photo',
+        'certificate_token',
+        'certificate_path',
     ];
 
     /**

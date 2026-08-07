@@ -6,10 +6,15 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+    private const PROJECT_FOLDER = 'zydus-independence';
+    private const CROP_PHOTO_FOLDER = self::PROJECT_FOLDER.'/crop-photo';
+    private const CERTIFICATE_PHOTO_FOLDER = self::PROJECT_FOLDER.'/certificate-photo';
+
     /**
      * Show the form (Create page).
      */
@@ -55,20 +60,34 @@ class UserController extends Controller
                 ->withInput();
         }
 
-        $uploadPath = public_path('uploads/users');
+        $token = Str::random(48);
+        $photoPath = self::CROP_PHOTO_FOLDER.'/'.$token.'.png';
+        $certificatePath = self::CERTIFICATE_PHOTO_FOLDER.'/'.$token.'.png';
+        $certificateImage = $this->makeCertificateImage($validated['name'], $imageData);
 
-        if (!is_dir($uploadPath)) {
-            mkdir($uploadPath, 0755, true);
+        $s3 = Storage::disk('s3');
+        $photoStored = $s3->put($photoPath, $imageData, [
+            'visibility' => 'public',
+            'ContentType' => 'image/png',
+        ]);
+        $certificateStored = $s3->put($certificatePath, $certificateImage, [
+            'visibility' => 'public',
+            'ContentType' => 'image/png',
+        ]);
+
+        if (!$photoStored || !$certificateStored) {
+            return back()
+                ->withErrors(['photo' => 'Photo upload failed. Please check S3 configuration and try again.'])
+                ->withInput();
         }
 
-        $fileName = time().'_'.Str::random(12).'.png';
-        file_put_contents($uploadPath.'/'.$fileName, $imageData);
-
-        $validated['photo'] = 'uploads/users/'.$fileName;
+        $validated['photo'] = $photoPath;
+        $validated['certificate_token'] = $token;
+        $validated['certificate_path'] = $certificatePath;
 
         $user = User::create($validated);
 
-        return redirect()->route('second')
+        return redirect()->route('second', ['u' => $user->certificate_token])
             ->with('success', 'Form submitted successfully!');
     }
 
@@ -93,44 +112,79 @@ class UserController extends Controller
         return view('atorva_gold');
     }
 
-    public function certificate()
+    public function certificate(Request $request)
     {
-        $user = $this->certificateUser();
+        $user = $this->certificateUser($request);
 
         if (!$user) {
             return redirect()->route('form.create');
         }
 
-        return view('certificate', compact('user'));
+        $photoUrl = $this->storedFileUrl($user->photo);
+
+        return view('certificate', compact('user', 'photoUrl'));
     }
 
-    public function downloadCertificate()
+    public function downloadCertificate(Request $request)
     {
-        $user = $this->certificateUser();
+        $user = $this->certificateUser($request);
 
         if (!$user) {
             return redirect()->route('form.create');
         }
 
-        $imageData = $this->makeCertificateImage($user);
+        $imageData = $this->storedCertificateImage($user);
 
         return response($imageData)
             ->header('Content-Type', 'image/png')
-            ->header('Content-Disposition', 'attachment; filename="zydus-certificate.png"');
+            ->header('Content-Disposition', 'attachment; filename="zydus-certificate-'.$user->id.'.png"');
     }
 
-    private function certificateUser(): ?User
+    private function certificateUser(Request $request): ?User
     {
-        return User::latest('id')->first();
+        $token = $request->query('u');
+
+        if (!$token) {
+            return null;
+        }
+
+        return User::where('certificate_token', $token)->first();
     }
 
-    private function makeCertificateImage(User $user): string
+    private function storedCertificateImage(User $user): string
+    {
+        $s3 = Storage::disk('s3');
+
+        if ($user->certificate_path && $s3->exists($user->certificate_path)) {
+            return $s3->get($user->certificate_path);
+        }
+
+        $photoData = $s3->get($user->photo);
+        $imageData = $this->makeCertificateImage($user->name, $photoData);
+        $certificatePath = self::CERTIFICATE_PHOTO_FOLDER.'/'.$user->certificate_token.'.png';
+
+        $s3->put($certificatePath, $imageData, [
+            'visibility' => 'public',
+            'ContentType' => 'image/png',
+        ]);
+
+        $user->forceFill(['certificate_path' => $certificatePath])->save();
+
+        return $imageData;
+    }
+
+    private function makeCertificateImage(string $name, string $photoData): string
     {
         $imagePath = public_path('images/Certificate.jpg');
         $certificate = imagecreatefromjpeg($imagePath);
+        $photo = imagecreatefromstring($photoData);
 
-        $this->placeCertificatePhoto($certificate, public_path($user->photo), 797, 342, 326);
-        $this->placeCertificateName($certificate, $user->name, 960, 748, 50, 900);
+        if ($photo) {
+            $this->placeCertificatePhoto($certificate, $photo, 797, 342, 326);
+            imagedestroy($photo);
+        }
+
+        $this->placeCertificateName($certificate, $name, 960, 748, 50, 900);
 
         ob_start();
         imagepng($certificate);
@@ -141,18 +195,8 @@ class UserController extends Controller
         return $imageData;
     }
 
-    private function placeCertificatePhoto($certificate, string $photoPath, int $x, int $y, int $size): void
+    private function placeCertificatePhoto($certificate, $photo, int $x, int $y, int $size): void
     {
-        if (!is_file($photoPath)) {
-            return;
-        }
-
-        $photo = $this->createImageFromPath($photoPath);
-
-        if (!$photo) {
-            return;
-        }
-
         $circle = imagecreatetruecolor($size, $size);
 
         imagealphablending($circle, false);
@@ -188,21 +232,24 @@ class UserController extends Controller
 
         imagecopy($certificate, $circle, $x, $y, 0, 0, $size, $size);
 
-        imagedestroy($photo);
         imagedestroy($circle);
     }
 
-    private function createImageFromPath(string $path)
+    private function storedFileUrl(?string $path): string
     {
-        $imageInfo = getimagesize($path);
-        $type = $imageInfo[2] ?? null;
+        if (!$path) {
+            return '';
+        }
 
-        return match ($type) {
-            IMAGETYPE_JPEG => imagecreatefromjpeg($path),
-            IMAGETYPE_PNG => imagecreatefrompng($path),
-            IMAGETYPE_WEBP => function_exists('imagecreatefromwebp') ? imagecreatefromwebp($path) : false,
-            default => false,
-        };
+        if (Str::startsWith($path, ['http://', 'https://'])) {
+            return $path;
+        }
+
+        if (Str::startsWith($path, self::PROJECT_FOLDER.'/')) {
+            return Storage::disk('s3')->url($path);
+        }
+
+        return asset($path);
     }
 
     private function placeCertificateName($certificate, string $name, int $centerX, int $baselineY, int $fontSize, int $maxWidth): void
