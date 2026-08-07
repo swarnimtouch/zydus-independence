@@ -14,13 +14,13 @@
     <section class="certificate-shell" aria-label="Certificate preview">
       <div class="certificate-sheet">
         <img src="{{ asset('images/Certificate.jpg') }}" alt="Certificate" class="certificate-bg" />
-        <img src="{{ asset($user->photo) }}" alt="{{ $user->name }}" class="certificate-user-photo" />
+        <img src="{{ $photoUrl }}" alt="{{ $user->name }}" class="certificate-user-photo" />
         <div class="certificate-user-name">{{ $user->name }}</div>
       </div>
     </section>
 
     <div class="certificate-actions">
-      <a href="{{ route('certificate.download') }}" class="certificate-action-btn certificate-download-btn">
+      <a href="{{ route('certificate.download', ['u' => request('u')]) }}" class="certificate-action-btn certificate-download-btn">
         Download
       </a>
       <a href="{{ route('form.create') }}" class="certificate-action-btn certificate-register-btn">

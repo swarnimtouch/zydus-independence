@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <a href="{{route('activity')}}" class="btn-next" aria-label="Continue"><span aria-hidden="true">&gt;&gt;</span></a>
+    <a href="{{ route('activity', ['u' => request('u')]) }}" class="btn-next" aria-label="Continue"><span aria-hidden="true">&gt;&gt;</span></a>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
