@@ -1337,7 +1337,7 @@ body.bg-slide-2 {
   }
 }
 
-@media (min-width:768px) and (max-width:1366px){
+@media (min-width:768px) and (max-width:1368px){
   .pole-scene{
     width:455px;
     height:570px;
@@ -1368,7 +1368,7 @@ body.bg-slide-2 {
   }
 }
 
-@media (min-width:768px) and (max-width:1366px) and (max-height:800px){
+@media (min-width:768px) and (max-width:1368px) and (max-height:800px){
   .content-row{
     min-height:70vh;
   }
@@ -1391,7 +1391,7 @@ body.bg-slide-2 {
   }
 }
 
-@media (min-width:768px) and (max-width:1366px) and (orientation:portrait){
+@media (min-width:768px) and (max-width:1368px) and (orientation:portrait){
   .activity-page .pole-scene{
     height:590px;
     transform:translateX(-34px);
@@ -1440,7 +1440,7 @@ body.bg-slide-2 {
   }
 }
 
-@media (min-width:768px) and (max-width:1366px) and (orientation:landscape){
+@media (min-width:768px) and (max-width:1368px) and (orientation:landscape){
   .activity-page .pole-scene{
     height:520px;
   }
@@ -3567,7 +3567,7 @@ body.form-page .form-card{
 }
 
 /* ---------- Second page only adjustments ---------- */
-@media (min-width:1025px) and (max-width:1366px) and (max-height:820px){
+@media (min-width:1025px) and (max-width:1368px) and (max-height:820px){
   body.bg-slide-2 .image-frame{
     max-width:min(82%, 460px);
   }
@@ -4605,7 +4605,7 @@ body.certificate-page{
 }
 
 /* ---------- Activity desktop text sizing only ---------- */
-@media (min-width:1025px) and (max-width:1366px){
+@media (min-width:1025px) and (max-width:1368px){
   .activity-page .activity-hero-text{
     width:min(50vw, 560px);
     max-width:560px;
@@ -4740,7 +4740,7 @@ body.certificate-page{
 }
 
 /* ---------- Activity iPad Pro landscape fit ---------- */
-@media (min-width:1181px) and (max-width:1366px) and (orientation:landscape){
+@media (min-width:1181px) and (max-width:1368px) and (orientation:landscape){
   .activity-page .page-wrapper{
     padding:max(.75rem, var(--safe-top)) max(1rem, var(--safe-right)) 0 max(1rem, var(--safe-left));
   }
@@ -4807,12 +4807,282 @@ body.certificate-page{
 }
 
 /* ---------- Atorva Generate Certificate tablet button position ---------- */
-@media (min-width:768px) and (max-width:1366px){
+@media (min-width:768px) and (max-width:1368px){
   body.atorva-page .atorva-certificate-btn{
     bottom:max(clamp(16px, 3vh, 34px), calc(var(--safe-bottom) + 12px));
     min-width:clamp(160px, 16vw, 238px);
     min-height:clamp(48px, 5.2vmin, 66px);
     padding:clamp(11px, 1.5vmin, 15px) clamp(16px, 2.4vmin, 26px);
     font-size:clamp(.72rem, 1.08vw, .95rem);
+  }
+}
+
+@media (min-width:700px) and (max-width:767px) and (orientation:landscape){
+  body.atorva-page .atorva-certificate-btn{
+    bottom:max(clamp(14px, 3vh, 24px), calc(var(--safe-bottom) + 10px));
+    min-width:clamp(142px, 22vw, 172px);
+    min-height:clamp(42px, 8vmin, 50px);
+    padding:9px 14px;
+    font-size:clamp(.62rem, 1.55vw, .72rem);
+  }
+}
+
+/* ---------- Activity final text: iPad landscape PPT match ---------- */
+@media (min-width:768px) and (max-width:1368px) and (orientation:landscape){
+  .activity-page.activity-final-active .activity-final-top,
+  .activity-page .activity-final-top{
+    top:12.8%;
+    width:min(84vw, 1060px);
+    font-size:clamp(1.78rem, 3.05vw, 2.65rem);
+    line-height:1.15;
+  }
+
+  .activity-page.activity-final-active .activity-final-preserve,
+  .activity-page .activity-final-preserve{
+    top:var(--final-preserve-center-y, 42%);
+    left:72%;
+    width:clamp(280px, 31vw, 420px);
+    transform:translateX(-50%);
+  }
+
+  .activity-page.activity-final-active .preserve-label,
+  .activity-page .preserve-label{
+    font-size:clamp(1.75rem, 3.05vw, 2.9rem);
+    line-height:1;
+    margin-bottom:clamp(.2rem, .7vh, .5rem);
+  }
+
+  .activity-page.activity-final-active .activity-final-preserve .final-golden-text,
+  .activity-page .activity-final-preserve .final-golden-text{
+    font-size:clamp(3.05rem, 5.05vw, 4.55rem);
+    line-height:.9;
+  }
+
+  .activity-page.activity-final-active .activity-final-logo,
+  .activity-page .activity-final-logo{
+    top:59.5%;
+    left:53%;
+    transform:translateX(-50%);
+  }
+
+  .activity-page.activity-final-active .activity-final-logo img,
+  .activity-page .activity-final-logo img{
+    width:clamp(235px, 25vw, 345px);
+  }
+
+  .activity-page.activity-final-active .activity-final-day,
+  .activity-page .activity-final-day{
+    top:77%;
+    left:53%;
+    transform:translateX(-50%);
+    line-height:.98;
+  }
+
+  .activity-page.activity-final-active .activity-final-day span,
+  .activity-page .activity-final-day span{
+    font-size:clamp(1.55rem, 2.65vw, 2.55rem);
+  }
+
+  .activity-page.activity-final-active .activity-final-day strong,
+  .activity-page .activity-final-day strong{
+    font-size:clamp(2.45rem, 4.55vw, 4.15rem);
+  }
+}
+
+/* ---------- Activity Surface Duo / small-tablet landscape fit ---------- */
+@media (min-width:700px) and (max-width:767px) and (orientation:landscape){
+  body.activity-page{
+    height:var(--app-height);
+    min-height:var(--app-height);
+    overflow:hidden;
+  }
+
+  .activity-page .brand-logo{
+    top:max(12px, calc(var(--safe-top) + 8px));
+    right:max(16px, calc(var(--safe-right) + 12px));
+    left:auto;
+    max-width:clamp(72px, 12vw, 92px);
+    margin:0;
+  }
+
+  .activity-page .page-wrapper{
+    height:var(--app-height);
+    min-height:var(--app-height);
+    display:flex;
+    align-items:stretch;
+    padding:max(.55rem, var(--safe-top)) max(.75rem, var(--safe-right)) 0 max(.75rem, var(--safe-left));
+    overflow:hidden;
+  }
+
+  .activity-page .page-wrapper > .container{
+    width:100%;
+    max-width:100%;
+    min-height:var(--app-height);
+    padding:0;
+  }
+
+  .activity-page .content-row{
+    min-height:var(--app-height);
+    height:var(--app-height);
+    display:flex;
+    flex-wrap:nowrap;
+    align-items:stretch;
+    margin:0;
+  }
+
+  .activity-page .content-row > .col-12:first-child{
+    flex:0 0 48%;
+    max-width:48%;
+    min-height:var(--app-height);
+    display:flex;
+    align-items:flex-end;
+    justify-content:flex-start;
+    padding:0;
+  }
+
+  .activity-page .content-row > .col-12:last-child{
+    flex:0 0 52%;
+    max-width:52%;
+    min-height:var(--app-height);
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-start;
+    padding:0 max(6px, 1.2vw) 0 max(44px, 6vw);
+  }
+
+  .activity-page .flag-stage{
+    width:100%;
+    min-height:var(--app-height);
+    align-items:flex-end;
+    justify-content:flex-start;
+    overflow:visible;
+  }
+
+  .activity-page .pole-scene{
+    width:min(43vw, 320px);
+    height:var(--app-height);
+    margin:0;
+    align-items:flex-end;
+    justify-content:center;
+    transform:translateX(clamp(-54px, -7vw, -34px));
+  }
+
+  .activity-page .pole-image{
+    width:auto;
+    height:min(74vh, calc(var(--app-height) - max(12px, var(--safe-top))));
+    max-height:calc(var(--app-height) - 2px);
+    max-width:40vw;
+    object-fit:contain;
+    object-position:center bottom;
+  }
+
+  .activity-page .flag-click-hint{
+    bottom:clamp(8px, 2.2vh, 14px);
+    min-width:clamp(150px, 24vw, 190px);
+    padding:8px 12px;
+    font-size:clamp(.62rem, 1.45vw, .72rem);
+  }
+
+  .activity-page .btn-next{
+    right:max(18px, calc(var(--safe-right) + 12px));
+    bottom:max(24px, calc(var(--safe-bottom) + 16px));
+    width:52px;
+    height:52px;
+    font-size:1.05rem;
+  }
+
+  .activity-page .activity-hero-text{
+    width:min(39vw, 285px);
+    max-width:285px;
+    padding:0 0 2vh;
+    text-align:left;
+    transform:translateX(clamp(6px, 1.8vw, 12px));
+  }
+
+  .activity-page .activity-hero-text .text-line{
+    text-align:left;
+  }
+
+  .activity-page .activity-hero-text .text-line.lg{
+    font-size:clamp(1.06rem, 2.7vw, 1.35rem);
+    line-height:1.08;
+    margin-bottom:2px;
+  }
+
+  .activity-page .activity-hero-text .activity-golden-text{
+    font-size:clamp(1.82rem, 4.4vw, 2.35rem);
+    line-height:.94;
+    margin:clamp(.18rem, .7vh, .34rem) 0 clamp(.22rem, .8vh, .38rem);
+  }
+
+  .activity-page .activity-purity-line{
+    gap:6px;
+    flex-wrap:nowrap;
+  }
+
+  .activity-page .activity-purity-line .heartwise-text,
+  .activity-page .activity-purity-line .purity-text{
+    font-size:clamp(.82rem, 2.15vw, 1.05rem);
+  }
+
+  .activity-page .activity-final-top{
+    top:12.5%;
+    left:50%;
+    width:min(82vw, 560px);
+    transform:translateX(-50%);
+    font-size:clamp(.95rem, 2.45vw, 1.25rem);
+    line-height:1.14;
+    white-space:nowrap;
+  }
+
+  .activity-page.activity-final-active .activity-final-preserve,
+  .activity-page .activity-final-preserve{
+    top:var(--final-preserve-center-y, 40%);
+    left:75%;
+    width:clamp(170px, 27vw, 210px);
+    transform:translateX(-50%);
+  }
+
+  .activity-page.activity-final-active .preserve-label,
+  .activity-page .preserve-label{
+    font-size:clamp(.95rem, 2.45vw, 1.2rem);
+    margin-bottom:.1rem;
+  }
+
+  .activity-page.activity-final-active .activity-final-preserve .final-golden-text,
+  .activity-page .activity-final-preserve .final-golden-text{
+    font-size:clamp(1.52rem, 3.85vw, 1.92rem);
+    line-height:.9;
+  }
+
+  .activity-page.activity-final-active .activity-final-logo,
+  .activity-page .activity-final-logo{
+    top:61%;
+    left:52%;
+    transform:translateX(-50%);
+  }
+
+  .activity-page.activity-final-active .activity-final-logo img,
+  .activity-page .activity-final-logo img{
+    width:clamp(128px, 20vw, 156px);
+  }
+
+  .activity-page.activity-final-active .activity-final-day,
+  .activity-page .activity-final-day{
+    top:77%;
+    left:52%;
+    width:min(42vw, 260px);
+    transform:translateX(-50%);
+    line-height:.98;
+  }
+
+  .activity-page.activity-final-active .activity-final-day span,
+  .activity-page .activity-final-day span{
+    font-size:clamp(.78rem, 2vw, .96rem);
+  }
+
+  .activity-page.activity-final-active .activity-final-day strong,
+  .activity-page .activity-final-day strong{
+    font-size:clamp(1.18rem, 3vw, 1.48rem);
   }
 }
