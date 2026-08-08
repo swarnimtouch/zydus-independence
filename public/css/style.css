@@ -4839,7 +4839,7 @@ body.certificate-page{
 
   .activity-page.activity-final-active .activity-final-preserve,
   .activity-page .activity-final-preserve{
-    top:var(--final-preserve-center-y, 42%);
+    top:var(--final-preserve-center-y, 35%);
     left:72%;
     width:clamp(280px, 31vw, 420px);
     transform:translateX(-50%);
@@ -5037,7 +5037,7 @@ body.certificate-page{
 
   .activity-page.activity-final-active .activity-final-preserve,
   .activity-page .activity-final-preserve{
-    top:var(--final-preserve-center-y, 40%);
+    top:var(--final-preserve-center-y, 34%);
     left:75%;
     width:clamp(170px, 27vw, 210px);
     transform:translateX(-50%);
