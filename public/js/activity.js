@@ -25,6 +25,14 @@
   const hostGifSrc   = $hostGif.data('src');
   const poleOnlySrc  = 'images/pole.png';
   const tabletLandscapeQuery = window.matchMedia('(min-width: 700px) and (max-width: 1368px) and (orientation: landscape)');
+  const finePointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const coarsePointerQuery = window.matchMedia('(any-pointer: coarse)');
+  const noHoverQuery = window.matchMedia('(any-hover: none)');
+
+  syncActivityDeviceClass();
+  bindMediaChange(finePointerQuery, syncActivityDeviceClass);
+  bindMediaChange(coarsePointerQuery, syncActivityDeviceClass);
+  bindMediaChange(noHoverQuery, syncActivityDeviceClass);
 
   /* ---------- Bubble image pool (assets folder se) ---------- */
   const bubbleImages = [
@@ -67,6 +75,49 @@
   let nextMode = null;
   let preserveAlignRaf = null;
   let preserveAlignUntil = 0;
+
+  function bindMediaChange(mediaQuery, handler) {
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', handler);
+    } else if (mediaQuery.addListener) {
+      mediaQuery.addListener(handler);
+    }
+  }
+
+  function isTabletLikeDevice() {
+    const ua = navigator.userAgent || '';
+    const platform = navigator.platform || '';
+    const uaData = navigator.userAgentData || null;
+    const uaPlatform = uaData && uaData.platform ? uaData.platform : platform;
+    const maxTouchPoints = navigator.maxTouchPoints || 0;
+    const hasTouch = maxTouchPoints > 0 || coarsePointerQuery.matches || ('ontouchstart' in window);
+    const isiPadOSDesktopUA = platform === 'MacIntel' && maxTouchPoints > 1;
+    const isMobileOrTabletUA = /Android|iPad|iPhone|iPod|Mobile|Tablet|Silk|Kindle/i.test(ua) || /Android|iOS|iPadOS/i.test(uaPlatform);
+    const tabletSizedTouchScreen = hasTouch && Math.max(window.screen.width || 0, window.screen.height || 0) <= 1600;
+    const foldableViewport = hasTouch && Math.max(window.innerWidth, window.innerHeight) <= 1368 && Math.min(window.innerWidth, window.innerHeight) >= 700;
+
+    return Boolean(
+      (uaData && uaData.mobile) ||
+      isMobileOrTabletUA ||
+      isiPadOSDesktopUA ||
+      coarsePointerQuery.matches ||
+      noHoverQuery.matches ||
+      tabletSizedTouchScreen ||
+      foldableViewport
+    );
+  }
+
+  function isDesktopDevice() {
+    return finePointerQuery.matches && !isTabletLikeDevice();
+  }
+
+  function syncActivityDeviceClass() {
+    const tabletDevice = isTabletLikeDevice();
+    const desktopDevice = finePointerQuery.matches && !tabletDevice;
+
+    document.body.classList.toggle('activity-tablet-device', tabletDevice);
+    document.body.classList.toggle('activity-desktop-device', desktopDevice);
+  }
 
   /* ============================================================
      PHASE 1 — Initial load (Slide 4 state)
@@ -328,15 +379,21 @@
     // Parent container visible
     gsap.set($phase3Text, { opacity: 1 });
     scheduleFinalPreserveAlign(3200);
-    $('.final-typewriter-line').removeClass('is-typing');
+    $('.final-typewriter-line').removeClass('is-typing is-revealed');
     const finalGoldenText = document.querySelector('.final-golden-text');
     if (finalGoldenText) void finalGoldenText.offsetWidth;
     gsap.set('.final-golden-text', { opacity: 1, y: 0 });
     setTimeout(function () {
       $('.final-golden-line').addClass('is-typing');
+      setTimeout(function () {
+        $('.final-golden-line').addClass('is-revealed');
+      }, 1150);
     }, 950);
     setTimeout(function () {
       $('.final-moments-line').addClass('is-typing');
+      setTimeout(function () {
+        $('.final-moments-line').addClass('is-revealed');
+      }, 1150);
     }, 1800);
 
     // Children staggered reveal
@@ -406,6 +463,7 @@
   }
 
   $(window).on('resize orientationchange', function () {
+    syncActivityDeviceClass();
     scheduleFinalPreserveAlign(700);
   });
 
