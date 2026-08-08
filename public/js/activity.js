@@ -66,6 +66,7 @@
   let phase2Started = false;   // guard: Phase 2 ek hi baar trigger ho
   let nextMode = null;
   let preserveAlignRaf = null;
+  let preserveAlignUntil = 0;
 
   /* ============================================================
      PHASE 1 — Initial load (Slide 4 state)
@@ -326,7 +327,7 @@
     $phase3Text.removeClass('is-hidden');
     // Parent container visible
     gsap.set($phase3Text, { opacity: 1 });
-    scheduleFinalPreserveAlign();
+    scheduleFinalPreserveAlign(3200);
     $('.final-typewriter-line').removeClass('is-typing');
     const finalGoldenText = document.querySelector('.final-golden-text');
     if (finalGoldenText) void finalGoldenText.offsetWidth;
@@ -353,12 +354,16 @@
 
     /* 3c. Real continue button show (waving flag continuous chalta rahega) */
     setTimeout(function () {
-      scheduleFinalPreserveAlign();
+      scheduleFinalPreserveAlign(1800);
       showNextButton('continue');
     }, 1800);
   }
 
-  function scheduleFinalPreserveAlign() {
+  function scheduleFinalPreserveAlign(durationMs) {
+    if (durationMs) {
+      preserveAlignUntil = Math.max(preserveAlignUntil, Date.now() + durationMs);
+    }
+
     if (preserveAlignRaf) {
       cancelAnimationFrame(preserveAlignRaf);
     }
@@ -394,13 +399,23 @@
     const preserveTopY = Math.max(minTopY, Math.min(targetTopY, maxTopY));
 
     finalPanel.style.setProperty('--final-preserve-center-y', preserveTopY + 'px');
+
+    if (Date.now() < preserveAlignUntil) {
+      preserveAlignRaf = requestAnimationFrame(alignFinalPreserveToHost);
+    }
   }
 
-  $(window).on('resize orientationchange', scheduleFinalPreserveAlign);
+  $(window).on('resize orientationchange', function () {
+    scheduleFinalPreserveAlign(700);
+  });
 
   if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', scheduleFinalPreserveAlign);
-    window.visualViewport.addEventListener('scroll', scheduleFinalPreserveAlign);
+    window.visualViewport.addEventListener('resize', function () {
+      scheduleFinalPreserveAlign(700);
+    });
+    window.visualViewport.addEventListener('scroll', function () {
+      scheduleFinalPreserveAlign(700);
+    });
   }
 
 });
