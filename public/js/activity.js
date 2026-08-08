@@ -24,6 +24,7 @@
   const audioEl      = document.getElementById('bgAudio');
   const hostGifSrc   = $hostGif.data('src');
   const poleOnlySrc  = 'images/pole.png';
+  const tabletLandscapeQuery = window.matchMedia('(min-width: 700px) and (max-width: 1368px) and (orientation: landscape)');
 
   /* ---------- Bubble image pool (assets folder se) ---------- */
   const bubbleImages = [
@@ -64,6 +65,7 @@
 
   let phase2Started = false;   // guard: Phase 2 ek hi baar trigger ho
   let nextMode = null;
+  let preserveAlignRaf = null;
 
   /* ============================================================
      PHASE 1 — Initial load (Slide 4 state)
@@ -324,6 +326,7 @@
     $phase3Text.removeClass('is-hidden');
     // Parent container visible
     gsap.set($phase3Text, { opacity: 1 });
+    scheduleFinalPreserveAlign();
     $('.final-typewriter-line').removeClass('is-typing');
     const finalGoldenText = document.querySelector('.final-golden-text');
     if (finalGoldenText) void finalGoldenText.offsetWidth;
@@ -350,8 +353,54 @@
 
     /* 3c. Real continue button show (waving flag continuous chalta rahega) */
     setTimeout(function () {
+      scheduleFinalPreserveAlign();
       showNextButton('continue');
     }, 1800);
+  }
+
+  function scheduleFinalPreserveAlign() {
+    if (preserveAlignRaf) {
+      cancelAnimationFrame(preserveAlignRaf);
+    }
+
+    preserveAlignRaf = requestAnimationFrame(alignFinalPreserveToHost);
+  }
+
+  function alignFinalPreserveToHost() {
+    preserveAlignRaf = null;
+
+    const finalPanel = $phase3Text[0];
+    const hostGif = $hostGif[0];
+    const preserve = document.querySelector('.activity-final-preserve');
+
+    if (!finalPanel || !hostGif || !preserve) return;
+
+    if (!tabletLandscapeQuery.matches || !$('body').hasClass('activity-final-active')) {
+      finalPanel.style.removeProperty('--final-preserve-center-y');
+      return;
+    }
+
+    const hostRect = hostGif.getBoundingClientRect();
+    const finalRect = finalPanel.getBoundingClientRect();
+    const preserveRect = preserve.getBoundingClientRect();
+
+    if (!hostRect.width || !hostRect.height || !finalRect.height) return;
+
+    const safeGap = 6;
+    const hostCenterY = hostRect.top + (hostRect.height / 2) - finalRect.top;
+    const targetTopY = hostCenterY - (preserveRect.height / 2);
+    const minTopY = safeGap;
+    const maxTopY = finalRect.height - preserveRect.height - safeGap;
+    const preserveTopY = Math.max(minTopY, Math.min(targetTopY, maxTopY));
+
+    finalPanel.style.setProperty('--final-preserve-center-y', preserveTopY + 'px');
+  }
+
+  $(window).on('resize orientationchange', scheduleFinalPreserveAlign);
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', scheduleFinalPreserveAlign);
+    window.visualViewport.addEventListener('scroll', scheduleFinalPreserveAlign);
   }
 
 });
