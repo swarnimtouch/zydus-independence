@@ -40,14 +40,16 @@
         <div class="col-12 col-md-6">
           <div class="flag-stage pole-stage" id="flagStage">
             <div class="pole-scene">
-              <img src="{{ asset('images/pole_with_flag.png') }}" alt="Flag Pole"
-                   class="pole-image" id="poleImage" loading="eager" decoding="async" fetchpriority="high" />
+              <div class="pole-media" id="poleMedia">
+                <img src="{{ asset('images/pole_with_flag.png') }}" alt="Flag Pole"
+                     class="pole-image" id="poleImage" loading="eager" decoding="async" fetchpriority="high" />
 
-              <img data-src="{{ asset('images/host.gif') }}" alt="Waving Flag"
-                   class="host-gif is-hidden" id="hostGif" />
+                <img data-src="{{ asset('images/host.gif') }}" alt="Waving Flag"
+                     class="host-gif is-hidden" id="hostGif" />
+              </div>
 
               <span class="flag-click-hint" id="flagClickHint">
-                Click on flag to host it ^
+                Click on flag to host it
               </span>
             </div>
           </div>
@@ -75,6 +77,9 @@
     </div>
 
     <!-- Floating bubbles container -->
+    <div class="bubble-phase-title is-hidden" id="bubblePhaseTitle">
+      Every <span>ACS</span> Patient deserve this <strong>GOLDEN MOMENT</strong>
+    </div>
     <div class="bubbles-container" id="bubblesContainer"></div>
 
     <!-- Final message after bubbles -->

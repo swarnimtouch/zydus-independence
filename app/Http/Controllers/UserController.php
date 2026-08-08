@@ -34,38 +34,55 @@ class UserController extends Controller
             'name'         => 'required|string|max:255',
             'bo_code'      => 'required|string|max:255',
             'doctor_code'  => 'required|string|max:255',
-            'photo'        => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'cropped_photo'=> 'required|string',
         ]);
 
-        unset($validated['cropped_photo']);
+        $validated['city'] = '';
+        $validated['speciality'] = '';
+        $validated['certificate_token'] = Str::random(48);
 
-        $croppedPhoto = $request->input('cropped_photo');
+        $user = User::create($validated);
 
-        if (!preg_match('/^data:image\/png;base64,/', $croppedPhoto)) {
+        session(['certificate_user_token' => $user->certificate_token]);
+
+        return redirect()->route('second')
+            ->with('success', 'Form submitted successfully!');
+    }
+
+    public function generateCertificate(Request $request)
+    {
+        $user = $this->certificateUser($request);
+
+        if (!$user) {
+            return redirect()->route('form.create');
+        }
+
+        return view('generate_certificate', compact('user'));
+    }
+
+    public function storeCertificatePhoto(Request $request): RedirectResponse
+    {
+        $user = $this->certificateUser($request);
+
+        if (!$user) {
+            return redirect()->route('form.create');
+        }
+
+        $request->validate([
+            'photo'         => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'cropped_photo' => 'required|string',
+        ]);
+
+        $imageData = $this->validatedCroppedPhoto($request);
+
+        if (!$imageData) {
             return back()
                 ->withErrors(['photo' => 'Please crop your photo again.'])
                 ->withInput();
         }
 
-        $imageData = base64_decode(preg_replace('/^data:image\/png;base64,/', '', $croppedPhoto), true);
-
-        if ($imageData === false) {
-            return back()
-                ->withErrors(['photo' => 'Please crop your photo again.'])
-                ->withInput();
-        }
-
-        if (getimagesizefromstring($imageData) === false) {
-            return back()
-                ->withErrors(['photo' => 'Please crop your photo again.'])
-                ->withInput();
-        }
-
-        $token = Str::random(48);
-        $photoPath = self::CROP_PHOTO_FOLDER.'/'.$token.'.png';
-        $certificatePath = self::CERTIFICATE_PHOTO_FOLDER.'/'.$token.'.png';
-        $certificateImage = $this->makeCertificateImage($validated['name'], $imageData);
+        $photoPath = self::CROP_PHOTO_FOLDER.'/'.$user->certificate_token.'.png';
+        $certificatePath = self::CERTIFICATE_PHOTO_FOLDER.'/'.$user->certificate_token.'.png';
+        $certificateImage = $this->makeCertificateImage($user->name, $imageData);
 
         $s3 = Storage::disk('s3');
         $photoStored = $s3->put($photoPath, $imageData, [
@@ -83,16 +100,12 @@ class UserController extends Controller
                 ->withInput();
         }
 
-        $validated['photo'] = $photoPath;
-        $validated['certificate_token'] = $token;
-        $validated['certificate_path'] = $certificatePath;
+        $user->forceFill([
+            'photo' => $photoPath,
+            'certificate_path' => $certificatePath,
+        ])->save();
 
-        $user = User::create($validated);
-
-        session(['certificate_user_token' => $user->certificate_token]);
-
-        return redirect()->route('second')
-            ->with('success', 'Form submitted successfully!');
+        return redirect()->route('certificate');
     }
 
     public function second()
@@ -124,6 +137,10 @@ class UserController extends Controller
             return redirect()->route('form.create');
         }
 
+        if (!$user->photo) {
+            return redirect()->route('certificate.generate');
+        }
+
         $photoUrl = $this->storedFileUrl($user->photo);
 
         return view('certificate', compact('user', 'photoUrl'));
@@ -135,6 +152,10 @@ class UserController extends Controller
 
         if (!$user) {
             return redirect()->route('form.create');
+        }
+
+        if (!$user->photo) {
+            return redirect()->route('certificate.generate');
         }
 
         $imageData = $this->storedCertificateImage($user);
@@ -173,6 +194,23 @@ class UserController extends Controller
         ]);
 
         $user->forceFill(['certificate_path' => $certificatePath])->save();
+
+        return $imageData;
+    }
+
+    private function validatedCroppedPhoto(Request $request): ?string
+    {
+        $croppedPhoto = $request->input('cropped_photo');
+
+        if (!preg_match('/^data:image\/png;base64,/', $croppedPhoto)) {
+            return null;
+        }
+
+        $imageData = base64_decode(preg_replace('/^data:image\/png;base64,/', '', $croppedPhoto), true);
+
+        if ($imageData === false || getimagesizefromstring($imageData) === false) {
+            return null;
+        }
 
         return $imageData;
     }

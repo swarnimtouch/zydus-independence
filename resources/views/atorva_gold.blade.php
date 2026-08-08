@@ -21,7 +21,7 @@
       <img src="{{ asset('images/atorva_mobile_bg.png') }}" alt="Atorva Gold" class="atorva-bg-image" loading="eager" decoding="async" fetchpriority="high" />
     </picture>
 
-    <a href="{{ route('certificate') }}" class="btn-next" aria-label="Continue"><span aria-hidden="true">&gt;&gt;</span></a>
+    <a href="{{ route('certificate.generate') }}" class="btn-next atorva-certificate-btn" aria-label="Generate Certificate"><span>Generate Certificate</span></a>
   </main>
 
   <script src="{{ asset('js/viewport-fit.js') }}"></script>

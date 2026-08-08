@@ -17,6 +17,7 @@
   const $hostGif     = $('#hostGif');
   const $phase1Text  = $('#phase1Text');
   const $phase3Text  = $('#phase3Text');
+  const $bubbleTitle = $('#bubblePhaseTitle');
   const $bubblesCont = $('#bubblesContainer');
   const $nextBtn     = $('#activityArrowBtn');
   const $flagHint    = $('#flagClickHint');
@@ -62,6 +63,7 @@
   ];
 
   let phase2Started = false;   // guard: Phase 2 ek hi baar trigger ho
+  let nextMode = null;
 
   /* ============================================================
      PHASE 1 — Initial load (Slide 4 state)
@@ -70,6 +72,7 @@
   // CSS already finger cursor + hint pulse lagata hai.
   // Actual hosting action sirf flag image par rahe.
   $poleImage.on('click', startPhase2);
+  $nextBtn.on('click', handleNextClick);
 
   gsap.to('#phase1Text .text-line', {
     opacity: 1,
@@ -118,17 +121,45 @@
     $hostGif.attr('src', '');
     $hostGif.removeClass('is-hidden');
     $hostGif.attr('src', hostGifSrc + '?start=' + Date.now());
-    gsap.fromTo($hostGif,
-      { opacity: 0, scale: 0.95 },
-      { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' }
-    );
+    gsap.set($hostGif, { opacity: 1, scale: 1 });
 
-    /* 4. EXACTLY 15 SECONDS TIMER:
-          15 second pure hone ke baad audio rukega aur BUBBLE WALA PART aayega */
     setTimeout(function () {
-      // Ab bubble animation start hogi
+      showNextButton('bubbles');
+    }, 4000);
+  }
+
+  function handleNextClick(event) {
+    if (nextMode === 'continue') {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (nextMode === 'bubbles') {
+      hideNextButton();
       startBubblePhase();
-    }, 7000);
+      return;
+    }
+
+    if (nextMode === 'final') {
+      hideNextButton();
+      startPhase3();
+    }
+  }
+
+  function showNextButton(mode) {
+    nextMode = mode;
+    $nextBtn.removeClass('is-hidden');
+    gsap.fromTo($nextBtn,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out' }
+    );
+  }
+
+  function hideNextButton() {
+    nextMode = null;
+    gsap.set($nextBtn, { opacity: 0, y: 20 });
+    $nextBtn.addClass('is-hidden');
   }
 
 
@@ -136,10 +167,32 @@
      BUBBLE PHASE — Only triggered after 15 Seconds of Flag/Music
      ============================================================ */
   function startBubblePhase() {
+    $('body').addClass('activity-bubble-active');
     hideActivityIntroText();
+    showBubbleTitle();
 
     // Bubbles spawn karo
     spawnBubbles();
+  }
+
+  function showBubbleTitle() {
+    $bubbleTitle.removeClass('is-hidden');
+    gsap.fromTo($bubbleTitle,
+      { opacity: 0, y: -16 },
+      { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }
+    );
+  }
+
+  function hideBubbleTitle() {
+    gsap.to($bubbleTitle, {
+      opacity: 0,
+      y: -12,
+      duration: 0.35,
+      ease: 'power2.out',
+      onComplete: function () {
+        $bubbleTitle.addClass('is-hidden');
+      }
+    });
   }
 
   function hideActivityIntroText() {
@@ -148,7 +201,10 @@
       duration: 0.45,
       ease: 'power2.out',
       onComplete: function () {
-        $phase1Text.addClass('is-hidden');
+        $phase1Text.css({
+          visibility: 'hidden',
+          pointerEvents: 'none'
+        });
       }
     });
   }
@@ -165,13 +221,19 @@
       }, i * spawnGap);
     });
 
-    setTimeout(startBubbleDrift, settleTime + bubbleLayout.length * spawnGap);
-    setTimeout(startPhase3, settleTime + bubbleLayout.length * spawnGap + 15000);
+    const allBubblesDisplayedAt = settleTime + bubbleLayout.length * spawnGap;
+
+    setTimeout(startBubbleDrift, allBubblesDisplayedAt);
+    setTimeout(function () {
+      showNextButton('final');
+    }, allBubblesDisplayedAt + 4000);
   }
 
   function createBubble(index, bubble) {
     const imgSrc = bubbleImages[index % bubbleImages.length];
     const bubbleSize = Math.round(bubble.size * getBubbleScale());
+    const safeTopPercent = getBubbleSafeTopPercent(bubbleSize);
+    const targetTop = Math.max(bubble.top, safeTopPercent);
 
     const $b = $('<div class="photo-bubble"></div>');
     $b.css({
@@ -188,7 +250,7 @@
       { xPercent: -50, yPercent: -50, scale: 0.2, opacity: 0 },
       {
         left: bubble.left + '%',
-        top: bubble.top + '%',
+        top: targetTop + '%',
         xPercent: -50,
         yPercent: -50,
         scale: 1,
@@ -206,6 +268,21 @@
     if (width <= 1024) return 0.76;
     if (width <= 1180) return 0.86;
     return 1;
+  }
+
+  function getBubbleSafeTopPercent(bubbleSize) {
+    const titleEl = $bubbleTitle[0];
+    const viewportHeight = Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0, 1);
+    let titleBottom = 0;
+
+    if (titleEl && !$bubbleTitle.hasClass('is-hidden')) {
+      titleBottom = titleEl.getBoundingClientRect().bottom;
+    }
+
+    const safeGap = Math.max(18, Math.round(viewportHeight * 0.035));
+    const safeTopPx = titleBottom + safeGap + (bubbleSize / 2);
+
+    return Math.min(92, (safeTopPx / viewportHeight) * 100);
   }
 
   function startBubbleDrift() {
@@ -229,6 +306,8 @@
   function startPhase3() {
 
     gsap.killTweensOf('.photo-bubble');
+    $('body').removeClass('activity-bubble-active');
+    hideBubbleTitle();
 
     /* 3a. Bubbles fade-out → DOM se remove */
     gsap.to('.photo-bubble', {
@@ -269,14 +348,9 @@
       }
     );
 
-    /* 3c. Next button show (waving flag continuous chalta rahega) */
+    /* 3c. Real continue button show (waving flag continuous chalta rahega) */
     setTimeout(function () {
-      $nextBtn.removeClass('is-hidden');
-      // Re-trigger entrance animation
-      gsap.fromTo($nextBtn,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }
-      );
+      showNextButton('continue');
     }, 1800);
   }
 
