@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 
 //Route::get('/', function () {
@@ -25,3 +26,17 @@ Route::post('/generate-certificate', [UserController::class, 'storeCertificatePh
 Route::get('/certificate', [UserController::class, 'certificate'])->name('certificate');
 
 Route::get('/certificate/download', [UserController::class, 'downloadCertificate'])->name('certificate.download');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/login', [AdminController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AdminController::class, 'login'])->name('login.store');
+    Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
+
+    Route::middleware('admin.auth')->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+        Route::get('/users', [AdminController::class, 'users'])->name('users');
+        Route::get('/export', [AdminController::class, 'export'])->name('export');
+        Route::get('/users/{user}/certificate/download', [AdminController::class, 'downloadCertificate'])->name('certificate.download');
+        Route::delete('/users/{user}', [AdminController::class, 'destroy'])->name('users.destroy');
+    });
+});
