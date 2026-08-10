@@ -76,6 +76,60 @@
   let preserveAlignRaf = null;
   let preserveAlignUntil = 0;
 
+  function parseAnimationTime(value) {
+    return value.split(',')
+      .map(function (item) {
+        item = item.trim();
+        return item.endsWith('ms') ? parseFloat(item) : parseFloat(item) * 1000;
+      })
+      .filter(function (time) {
+        return Number.isFinite(time);
+      });
+  }
+
+  function getGoldenTypingDuration(element) {
+    if (!element) return 1750;
+
+    let maxDuration = 1750;
+
+    $(element).find('.golden-word, .final-typewriter-line')
+      .addBack('.golden-word, .final-typewriter-line')
+      .each(function () {
+      const styles = window.getComputedStyle(this);
+      const durations = parseAnimationTime(styles.animationDuration);
+      const delays = parseAnimationTime(styles.animationDelay);
+      const longest = durations.reduce(function (max, duration, index) {
+        return Math.max(max, duration + (delays[index] || delays[0] || 0));
+      }, 0);
+
+      maxDuration = Math.max(maxDuration, longest);
+    });
+
+    return maxDuration + 80;
+  }
+
+  function revealFinalGoldenText(callback) {
+    const $goldenLine = $('.final-golden-line');
+    const $momentsLine = $('.final-moments-line');
+
+    $goldenLine.addClass('is-typing');
+    const goldenDuration = getGoldenTypingDuration($goldenLine[0]);
+
+    setTimeout(function () {
+      $goldenLine.addClass('is-revealed');
+      $momentsLine.addClass('is-typing');
+      const momentsDuration = getGoldenTypingDuration($momentsLine[0]);
+
+      setTimeout(function () {
+        $momentsLine.addClass('is-revealed');
+
+        if (typeof callback === 'function') {
+          callback();
+        }
+      }, momentsDuration);
+    }, goldenDuration);
+  }
+
   function bindMediaChange(mediaQuery, handler) {
     if (mediaQuery.addEventListener) {
       mediaQuery.addEventListener('change', handler);
@@ -128,18 +182,41 @@
   $poleImage.on('click', startPhase2);
   $nextBtn.on('click', handleNextClick);
 
-  gsap.to('#phase1Text .text-line', {
-    opacity: 1,
-    y: 0,
-    duration: 1,
-    ease: 'power3.out',
-    stagger: 0.35,
-    delay: 0.4
-  });
+  const $phase1Lines = $('#phase1Text .text-line');
+  const $phase1IntroLines = $phase1Lines.slice(0, 2);
+  const $phase1GoldenLine = $('#phase1Text .activity-golden-text');
+  const $phase1AfterGoldenLines = $phase1Lines.slice(3);
 
-  setTimeout(function () {
-    $('#phase1Text .activity-golden-text').addClass('is-typing');
-  }, 1150);
+  gsap.set($phase1Lines, { opacity: 0, y: 40 });
+
+  gsap.timeline({ delay: 0.4 })
+    .to($phase1IntroLines, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'power3.out',
+      stagger: 0.25
+    })
+    .to($phase1GoldenLine, {
+      opacity: 1,
+      y: 0,
+      duration: 0.45,
+      ease: 'power2.out',
+      onStart: function () {
+        $phase1GoldenLine.addClass('is-typing');
+      },
+      onComplete: function () {
+        setTimeout(function () {
+          gsap.to($phase1AfterGoldenLines, {
+            opacity: 1,
+            y: 0,
+            duration: 0.65,
+            ease: 'power3.out',
+            stagger: 0.22
+          });
+        }, Math.max(0, getGoldenTypingDuration($phase1GoldenLine[0]) - 450));
+      }
+    }, '+=0.1');
 
 
   /* ============================================================
@@ -382,32 +459,42 @@
     $('.final-typewriter-line').removeClass('is-typing is-revealed');
     const finalGoldenText = document.querySelector('.final-golden-text');
     if (finalGoldenText) void finalGoldenText.offsetWidth;
+    gsap.set(['.activity-final-top', '.activity-final-preserve', '.activity-final-logo', '.activity-final-day'], { opacity: 0, y: 28 });
     gsap.set('.final-golden-text', { opacity: 1, y: 0 });
-    setTimeout(function () {
-      $('.final-golden-line').addClass('is-typing');
-      setTimeout(function () {
-        $('.final-golden-line').addClass('is-revealed');
-      }, 1150);
-    }, 950);
-    setTimeout(function () {
-      $('.final-moments-line').addClass('is-typing');
-      setTimeout(function () {
-        $('.final-moments-line').addClass('is-revealed');
-      }, 1150);
-    }, 1800);
 
-    // Children staggered reveal
-    gsap.fromTo('.final-animate',
-      { opacity: 0, y: 28 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        stagger: 0.4,
-        delay: 0.6
+    gsap.to('.activity-final-top', {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'power3.out',
+      delay: 0.45
+    });
+
+    gsap.to('.activity-final-preserve', {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'power3.out',
+      delay: 0.95,
+      onComplete: function () {
+        revealFinalGoldenText(function () {
+          gsap.to('.activity-final-logo', {
+            opacity: 1,
+            y: 0,
+            duration: 0.75,
+            ease: 'power3.out'
+          });
+
+          gsap.to('.activity-final-day', {
+            opacity: 1,
+            y: 0,
+            duration: 0.75,
+            ease: 'power3.out',
+            delay: 0.18
+          });
+        });
       }
-    );
+    });
 
     /* 3c. Real continue button show (waving flag continuous chalta rahega) */
     setTimeout(function () {
