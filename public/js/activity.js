@@ -24,7 +24,7 @@
   const audioEl      = document.getElementById('bgAudio');
   const hostGifSrc   = $hostGif.data('src');
   const poleOnlySrc  = 'images/pole.png';
-  const tabletLandscapeQuery = window.matchMedia('(min-width: 700px) and (max-width: 1368px) and (orientation: landscape)');
+  const tabletLandscapeQuery = window.matchMedia('(min-width: 700px) and (orientation: landscape)');
   const finePointerQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
   const coarsePointerQuery = window.matchMedia('(any-pointer: coarse)');
   const noHoverQuery = window.matchMedia('(any-hover: none)');

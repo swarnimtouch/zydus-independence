@@ -693,6 +693,7 @@ body.bg-slide-2 {
   display:block;
   overflow:hidden;
   white-space:nowrap;
+  -webkit-clip-path:inset(0 100% 0 0);
   clip-path:inset(0 100% 0 0);
   background:none;
   background-size:auto;
@@ -714,7 +715,14 @@ body.bg-slide-2 {
   to { width: 100% }
 }
 @keyframes typingGoldenWord {
-  to { clip-path:inset(0 0 0 0); }
+  from {
+    -webkit-clip-path:inset(0 100% 0 0);
+    clip-path:inset(0 100% 0 0);
+  }
+  to {
+    -webkit-clip-path:inset(0 0 0 0);
+    clip-path:inset(0 0 0 0);
+  }
 }
 .bg-slide-2 .golden-two-line,
 .bg-slide-3 .golden-two-line,
@@ -1061,6 +1069,7 @@ body.bg-slide-2 {
   width:100%;
   overflow:hidden;
   white-space:nowrap;
+  -webkit-clip-path:inset(0 100% 0 0);
   clip-path:inset(0 100% 0 0);
 }
 
@@ -1069,7 +1078,14 @@ body.bg-slide-2 {
 }
 
 @keyframes finalLineReveal{
-  to{clip-path:inset(0 0 0 0);}
+  from{
+    -webkit-clip-path:inset(0 100% 0 0);
+    clip-path:inset(0 100% 0 0);
+  }
+  to{
+    -webkit-clip-path:inset(0 0 0 0);
+    clip-path:inset(0 0 0 0);
+  }
 }
 
 .activity-final-logo{
@@ -5120,7 +5136,17 @@ body.certificate-page{
 }
 
 .activity-final-preserve .final-typewriter-line.is-revealed{
+  -webkit-clip-path:inset(0 0 0 0) !important;
   clip-path:inset(0 0 0 0) !important;
+}
+
+@supports not ((clip-path:inset(0 100% 0 0)) or (-webkit-clip-path:inset(0 100% 0 0))){
+  .golden-two-line .golden-word,
+  .activity-final-preserve .final-typewriter-line{
+    overflow:visible;
+    -webkit-clip-path:none;
+    clip-path:none;
+  }
 }
 
 /* ---------- Activity final content: real desktop only ---------- */
@@ -5258,6 +5284,129 @@ body.certificate-page{
   body.activity-page.activity-desktop-device .activity-purity-line .heartwise-text,
   body.activity-page.activity-desktop-device .activity-purity-line .purity-text{
     font-size:clamp(1.7rem, 2.05vw, 2.55rem);
+  }
+}
+
+/* ---------- Activity foldable/tablet landscape: device-class only ---------- */
+@media (min-width:1025px) and (max-width:1368px) and (orientation:landscape){
+  body.activity-page.activity-tablet-device{
+    height:var(--app-height);
+    min-height:var(--app-height);
+    overflow:hidden;
+  }
+
+  body.activity-page.activity-tablet-device .page-wrapper{
+    height:var(--app-height);
+    min-height:var(--app-height);
+    display:flex;
+    align-items:stretch;
+    padding:max(.75rem, var(--safe-top)) max(1rem, var(--safe-right)) 0 max(1rem, var(--safe-left));
+    overflow:hidden;
+  }
+
+  body.activity-page.activity-tablet-device .page-wrapper > .container{
+    width:100%;
+    max-width:100%;
+    min-height:var(--app-height);
+    padding:0;
+  }
+
+  body.activity-page.activity-tablet-device .content-row{
+    min-height:var(--app-height);
+    height:var(--app-height);
+    display:flex;
+    flex-wrap:nowrap;
+    align-items:stretch;
+    margin:0;
+  }
+
+  body.activity-page.activity-tablet-device .content-row > .col-12:first-child{
+    flex:0 0 48%;
+    max-width:48%;
+    min-height:var(--app-height);
+    display:flex;
+    align-items:flex-end;
+    justify-content:flex-start;
+    padding:0;
+  }
+
+  body.activity-page.activity-tablet-device .content-row > .col-12:last-child{
+    flex:0 0 52%;
+    max-width:52%;
+    min-height:var(--app-height);
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-start;
+    padding:0 max(10px, 1.8vw) 0 clamp(30px, 4.5vw, 58px);
+  }
+
+  body.activity-page.activity-tablet-device .flag-stage{
+    width:100%;
+    min-height:var(--app-height);
+    align-items:flex-end;
+    justify-content:flex-start;
+    overflow:visible;
+  }
+
+  body.activity-page.activity-tablet-device .pole-scene{
+    width:min(43vw, 460px);
+    height:var(--app-height);
+    margin:0;
+    align-items:flex-end;
+    justify-content:center;
+    transform:translateX(clamp(-78px, -5.8vw, -46px));
+  }
+
+  body.activity-page.activity-tablet-device .pole-image{
+    width:auto;
+    height:min(76vh, calc(var(--app-height) - max(8px, var(--safe-top))));
+    max-height:calc(var(--app-height) - 2px);
+    max-width:40vw;
+    object-fit:contain;
+    object-position:center bottom;
+  }
+
+  body.activity-page.activity-tablet-device .activity-hero-text{
+    width:min(40vw, 500px);
+    max-width:500px;
+    padding:0 0 2.4vh;
+    text-align:left;
+    transform:translateX(clamp(8px, 1.8vw, 22px));
+  }
+
+  body.activity-page.activity-tablet-device .activity-hero-text .text-line{
+    text-align:left;
+  }
+
+  body.activity-page.activity-tablet-device .activity-hero-text .text-line.lg{
+    font-size:clamp(1.55rem, 2.35vw, 2.25rem);
+    line-height:1.08;
+    margin-bottom:clamp(.2rem, .65vh, .44rem);
+  }
+
+  body.activity-page.activity-tablet-device .activity-hero-text .activity-golden-text{
+    font-size:clamp(2.35rem, 3.75vw, 3.75rem);
+    line-height:.92;
+    margin:clamp(.24rem, .8vh, .48rem) 0 clamp(.32rem, .9vh, .56rem);
+  }
+
+  body.activity-page.activity-tablet-device .activity-purity-line{
+    justify-content:flex-start;
+    gap:clamp(7px, .9vw, 10px);
+    flex-wrap:nowrap;
+  }
+
+  body.activity-page.activity-tablet-device .activity-purity-line .heartwise-text,
+  body.activity-page.activity-tablet-device .activity-purity-line .purity-text{
+    font-size:clamp(1.05rem, 1.65vw, 1.58rem);
+  }
+}
+
+/* ---------- Activity final: desktop Preserve aligns to host.gif center ---------- */
+@media (min-width:1025px) and (orientation:landscape){
+  body.activity-page.activity-desktop-device.activity-final-active .activity-final-preserve,
+  body.activity-page.activity-desktop-device .activity-final-preserve{
+    top:var(--final-preserve-center-y, 39.5%) !important;
   }
 }
 
