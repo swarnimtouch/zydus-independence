@@ -7,9 +7,12 @@ $(document).ready(function () {
     const $photoPreviewWrap = $('#photoPreviewWrap');
     const $photoPreviewImg = $('#photoPreviewImg');
     const $photoCropper = $('#photoCropper');
+    const $certificatePhotoForm = $('#certificatePhotoForm');
+    const $cropPhotoBtn = $('#cropPhotoBtn');
     const cropModalEl = document.getElementById('photoCropModal');
     const cropModal = cropModalEl ? new bootstrap.Modal(cropModalEl) : null;
     let croppieInstance = null;
+    let isSubmitting = false;
 
     function getCropperSize() {
         if (window.matchMedia('(max-width: 767px)').matches) {
@@ -93,10 +96,13 @@ $(document).ready(function () {
         reader.readAsDataURL(file);
     });
 
-    $('#cropPhotoBtn').on('click', function () {
-        if (!croppieInstance) {
+    $cropPhotoBtn.on('click', function () {
+        if (!croppieInstance || isSubmitting) {
             return;
         }
+
+        isSubmitting = true;
+        $cropPhotoBtn.prop('disabled', true).text('Processing...');
 
         croppieInstance.result({
             type: 'base64',
@@ -108,12 +114,20 @@ $(document).ready(function () {
             circle: true
         }).then(function (croppedImage) {
             $croppedPhoto.val(croppedImage);
-            $photoPreviewImg.attr('src', croppedImage);
-            $photoUploadBox.addClass('is-hidden');
-            $photoPreviewWrap.removeClass('is-hidden');
             $('#photoError').text('');
             $photoInput.valid();
-            cropModal.hide();
+
+            if ($certificatePhotoForm.valid()) {
+                $certificatePhotoForm[0].requestSubmit();
+                return;
+            }
+
+            isSubmitting = false;
+            $cropPhotoBtn.prop('disabled', false).text('Crop & Next');
+        }).catch(function () {
+            isSubmitting = false;
+            $cropPhotoBtn.prop('disabled', false).text('Crop & Next');
+            $('#photoError').text('Please crop your photo again.');
         });
     });
 

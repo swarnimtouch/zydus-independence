@@ -59,7 +59,7 @@
                 <small id="photoError" class="text-danger"></small>
               </div>
 
-              <button type="submit" class="btn-submit">
+              <button type="submit" class="btn-submit certificate-manual-next is-hidden">
                 Next
               </button>
             </form>
@@ -83,7 +83,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="crop-cancel-btn" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="crop-save-btn" id="cropPhotoBtn">Crop Photo</button>
+          <button type="button" class="crop-save-btn" id="cropPhotoBtn">Crop &amp; Next</button>
         </div>
       </div>
     </div>
@@ -95,6 +95,6 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/additional-methods.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
-  <script src="{{ asset('js/generate_certificate.js') }}"></script>
+  <script src="{{ asset('js/generate_certificate.js') }}?v={{ filemtime(public_path('js/generate_certificate.js')) }}"></script>
 </body>
 </html>
