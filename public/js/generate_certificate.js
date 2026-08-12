@@ -11,6 +11,7 @@ $(document).ready(function () {
     const $cropPhotoBtn = $('#cropPhotoBtn');
     const cropModalEl = document.getElementById('photoCropModal');
     const cropModal = cropModalEl ? new bootstrap.Modal(cropModalEl) : null;
+    const maxPhotoSize = 2 * 1024 * 1024;
     let croppieInstance = null;
     let isSubmitting = false;
 
@@ -83,6 +84,14 @@ $(document).ready(function () {
 
         if (!file.type.match(/^image\/(jpeg|png|webp)$/)) {
             $('#photoError').text('Only JPG, PNG and WEBP images are allowed');
+            $photoInput.val('');
+            return;
+        }
+
+        if (file.size > maxPhotoSize) {
+            $('#photoError').text('Photo size must be 2MB or less');
+            $photoInput.val('');
+            resetCropper();
             return;
         }
 
